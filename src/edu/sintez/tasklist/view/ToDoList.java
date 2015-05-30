@@ -26,7 +26,7 @@ public class ToDoList extends Activity {
 	public static final int TO_DO_DETAILS_REQUEST = 1000;
 	public static final String TO_DO_DOCUMENTS = "edu.sintez.model.ToDoDocument";
 
-	private ListView listTasks;
+	private ListView lvTasks;
 
 	private List<ToDoDocument> listDocs;
 	private ArrayAdapter<ToDoDocument> arrayAdapter;
@@ -37,15 +37,14 @@ public class ToDoList extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_todo_list);
 
-		listTasks = (ListView) findViewById(R.id.lw_tasks);
-		listTasks.setOnItemClickListener(new ListViewClickListener());
+		lvTasks = (ListView) findViewById(R.id.lw_tasks);
+		lvTasks.setOnItemClickListener(new ListViewClickListener());
 
 		listDocs = new ArrayList<ToDoDocument>();
 		arrayAdapter = new ArrayAdapter<ToDoDocument>(this, R.layout.pattern_lw_row, listDocs);
-		listTasks.setAdapter(arrayAdapter);
+		lvTasks.setAdapter(arrayAdapter);
 
-//		fillListTasks();
-		testDocEquals();
+		fillListTasks();
 	}
 
 	@Override
@@ -92,30 +91,10 @@ public class ToDoList extends Activity {
 		listDocs.add(doc3);
 	}
 
-	/**
-	 * Тестирование сравнения двух документов между собой
-	 */
-	private void testDocEquals(){
-		ToDoDocument doc1 = new ToDoDocument("Name1", "Context1", null);
-		doc1.setNumber(1);
-		ToDoDocument doc2 = new ToDoDocument("Name2", "Context2", null);
-		doc2.setNumber(2);
-		ToDoDocument doc3 = new ToDoDocument("Name3", "Context3", null);
-		doc3.setNumber(3);
-		ToDoDocument doc4 = new ToDoDocument("Name4", "Context4", null);
-		doc4.setNumber(3);
-
-		if (doc1.equals(doc2)){
-			Log.d(LOG, "doc 1 equals doc 2");
-		} else {
-			Log.d(LOG, "doc 1 NOT equals doc 2");
-		}
-
-		if (doc3.equals(doc4)){
-			Log.d(LOG, "doc 3 equals doc 4");
-		} else {
-			Log.d(LOG, "doc 3 NOT equals doc 4");
-		}
+	private void addDocument(ToDoDocument doc) {
+		listDocs.add(doc);
+		doc.setNumber(listDocs.indexOf(doc));
+		arrayAdapter.notifyDataSetChanged();
 	}
 
 	private void showDocument(ToDoDocument toDoDocument) {
@@ -140,8 +119,36 @@ public class ToDoList extends Activity {
 					Log.d(LOG, "back");
 					break;
 				case ToDoDetail.RESULT_SAVE:
+					ToDoDocument receiveDoc = (ToDoDocument) data.getSerializableExtra(TO_DO_DOCUMENTS);
+					addDocument(receiveDoc);
 					Log.d(LOG, "save");
 					break;
 			}
+	}
+
+	/**
+	 * Тестирование сравнения двух документов между собой
+	 */
+	private void testDocEquals(){
+		ToDoDocument doc1 = new ToDoDocument("Name1", "Context1", null);
+		doc1.setNumber(1);
+		ToDoDocument doc2 = new ToDoDocument("Name2", "Context2", null);
+		doc2.setNumber(2);
+		ToDoDocument doc3 = new ToDoDocument("Name3", "Context3", null);
+		doc3.setNumber(3);
+		ToDoDocument doc4 = new ToDoDocument("Name4", "Context4", null);
+		doc4.setNumber(3);
+
+		if (doc1.equals(doc2)){
+			Log.d(LOG, "doc 1 equals doc 2");
+		} else {
+			Log.d(LOG, "doc 1 NOT equals doc 2");
+		}
+
+		if (doc3.equals(doc4)){
+			Log.d(LOG, "doc 3 equals doc 4");
+		} else {
+			Log.d(LOG, "doc 3 NOT equals doc 4");
+		}
 	}
 }

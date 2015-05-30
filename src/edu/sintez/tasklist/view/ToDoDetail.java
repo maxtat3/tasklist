@@ -50,7 +50,7 @@ public class ToDoDetail extends Activity {
 				break;
 
 			case R.id.item4_save:
-				setResult(RESULT_SAVE);
+				setResult(RESULT_SAVE, getIntent());
 				Log.d(LOG, "save");
 				finish();
 				break;
