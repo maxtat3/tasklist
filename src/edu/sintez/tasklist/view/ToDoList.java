@@ -92,6 +92,9 @@ public class ToDoList extends Activity {
 		listDocs.add(doc3);
 	}
 
+	/**
+	 * Тестирование сравнения двух документов между собой
+	 */
 	private void testDocEquals(){
 		ToDoDocument doc1 = new ToDoDocument("Name1", "Context1", null);
 		doc1.setNumber(1);
