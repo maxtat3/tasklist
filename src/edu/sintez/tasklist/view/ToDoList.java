@@ -39,24 +39,6 @@ public class ToDoList extends Activity {
 		fillListTasks();
 	}
 
-	/**
-	 * Имитация заполнение тасков
-	 */
-	private void fillListTasks() {
-		ToDoDocument doc1 = new ToDoDocument("Name1", "Context1", null);
-		ToDoDocument doc2 = new ToDoDocument("Name2", "Context2", null);
-		ToDoDocument doc3 = new ToDoDocument("Name3", "Context3", null);
-
-		List<ToDoDocument> listDocument = new ArrayList<ToDoDocument>();
-		listDocument.add(doc1);
-		listDocument.add(doc2);
-		listDocument.add(doc3);
-
-		ArrayAdapter<ToDoDocument> arrayAdapter = new ArrayAdapter<ToDoDocument>(this, R.layout.pattern_lw_row, listDocument);
-		listTasks.setAdapter(arrayAdapter);
-	}
-
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_todo_list, menu);
@@ -84,10 +66,34 @@ public class ToDoList extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Имитация заполнение тасков
+	 */
+	private void fillListTasks() {
+		ToDoDocument doc1 = new ToDoDocument("Name1", "Context1", null);
+		ToDoDocument doc2 = new ToDoDocument("Name2", "Context2", null);
+		ToDoDocument doc3 = new ToDoDocument("Name3", "Context3", null);
+
+		List<ToDoDocument> listDocument = new ArrayList<ToDoDocument>();
+		listDocument.add(doc1);
+		listDocument.add(doc2);
+		listDocument.add(doc3);
+
+		ArrayAdapter<ToDoDocument> arrayAdapter = new ArrayAdapter<ToDoDocument>(this, R.layout.pattern_lw_row, listDocument);
+		listTasks.setAdapter(arrayAdapter);
+	}
+
+	private void showDocument(ToDoDocument toDoDocument) {
+		Intent intentToDoDetails = new Intent(this, ToDoDetail.class);
+		intentToDoDetails.putExtra(TO_DO_DOCUMENTS, toDoDocument);
+		startActivityForResult(intentToDoDetails, TO_DO_DETAILS_REQUEST);
+	}
+
 	private class ListViewClickListener implements android.widget.AdapterView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			Toast.makeText(getApplicationContext(), "pos = " + position, Toast.LENGTH_SHORT).show();
+			ToDoDocument doc = (ToDoDocument) parent.getAdapter().getItem(position);
+			showDocument(doc);
 		}
 	}
 }

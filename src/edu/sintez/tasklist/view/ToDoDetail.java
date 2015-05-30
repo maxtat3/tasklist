@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 import edu.sintez.tasklist.R;
+import edu.sintez.tasklist.model.ToDoDocument;
 
 
 /**
@@ -15,11 +17,19 @@ public class ToDoDetail extends Activity {
 
 	public static final int RESULT_SAVE = 1;
 
+	private TextView textView;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_todo_detail);
 
+		textView = (TextView) findViewById(R.id.et);
+
+		ToDoDocument toDoDocument = (ToDoDocument) getIntent().getSerializableExtra(ToDoList.TO_DO_DOCUMENTS);
+		setTitle(toDoDocument.getName());
+		textView.setText(toDoDocument.getName());
 	}
 
 	@Override
