@@ -23,7 +23,7 @@ import java.util.List;
 public class ToDoList extends Activity {
 
 	public static final int TO_DO_DETAILS_REQUEST = 1000;
-	public static final String TO_DO_DOCUMENTS = "sintez.homework.model.ToDoDocument";
+	public static final String TO_DO_DOCUMENTS = "edu.sintez.model.ToDoDocument";
 
 	private ListView listTasks;
 
@@ -52,9 +52,13 @@ public class ToDoList extends Activity {
 				Toast.makeText(this, "press new document", Toast.LENGTH_SHORT).show();
 				break;
 
-			case R.id.item2_add_task:
+			case R.id.item2_add_task:{
+				ToDoDocument doc = new ToDoDocument();
+				doc.setName("doc name");
+				showDocument(doc);
 				Toast.makeText(this, "press new document", Toast.LENGTH_SHORT).show();
-				break;
+				return true;
+			}
 
 			case R.id.item3_back:
 				Toast.makeText(this, "pressed Back", Toast.LENGTH_SHORT).show();
