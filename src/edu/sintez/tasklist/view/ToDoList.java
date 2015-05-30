@@ -64,7 +64,7 @@ public class ToDoList extends Activity {
 				Toast.makeText(this, "pressed Back", Toast.LENGTH_SHORT).show();
 				break;
 			case R.id.item4_save:
-				Toast.makeText(this, "press SAVE", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "pressed save", Toast.LENGTH_SHORT).show();
 				break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -99,5 +99,18 @@ public class ToDoList extends Activity {
 			ToDoDocument doc = (ToDoDocument) parent.getAdapter().getItem(position);
 			showDocument(doc);
 		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == TO_DO_DETAILS_REQUEST)
+			switch (resultCode){
+				case RESULT_CANCELED:
+					Toast.makeText(this, "cancel", Toast.LENGTH_SHORT).show();
+					break;
+				case ToDoDetail.RESULT_SAVE:
+					Toast.makeText(this, "saved", Toast.LENGTH_SHORT).show();
+					break;
+			}
 	}
 }

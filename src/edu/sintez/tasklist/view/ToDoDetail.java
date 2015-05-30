@@ -42,11 +42,15 @@ public class ToDoDetail extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()){
 			case R.id.item3_back:
-				Toast.makeText(this, "press new back", Toast.LENGTH_SHORT).show();
+				setResult(RESULT_CANCELED);
+				Toast.makeText(this, "press back", Toast.LENGTH_SHORT).show();
+				finish();
 				break;
 
 			case R.id.item4_save:
+				setResult(RESULT_SAVE);
 				Toast.makeText(this, "press save", Toast.LENGTH_SHORT).show();
+				finish();
 				break;
 		}
 		return super.onOptionsItemSelected(item);
