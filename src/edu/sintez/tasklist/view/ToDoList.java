@@ -40,7 +40,12 @@ public class ToDoList extends Activity {
 		listTasks = (ListView) findViewById(R.id.lw_tasks);
 		listTasks.setOnItemClickListener(new ListViewClickListener());
 
-		fillListTasks();
+		listDocs = new ArrayList<ToDoDocument>();
+		arrayAdapter = new ArrayAdapter<ToDoDocument>(this, R.layout.pattern_lw_row, listDocs);
+		listTasks.setAdapter(arrayAdapter);
+
+//		fillListTasks();
+		testDocEquals();
 	}
 
 	@Override
@@ -82,13 +87,32 @@ public class ToDoList extends Activity {
 		ToDoDocument doc2 = new ToDoDocument("Name2", "Context2", null);
 		ToDoDocument doc3 = new ToDoDocument("Name3", "Context3", null);
 
-		listDocs = new ArrayList<ToDoDocument>();
 		listDocs.add(doc1);
 		listDocs.add(doc2);
 		listDocs.add(doc3);
+	}
 
-		arrayAdapter = new ArrayAdapter<ToDoDocument>(this, R.layout.pattern_lw_row, listDocs);
-		listTasks.setAdapter(arrayAdapter);
+	private void testDocEquals(){
+		ToDoDocument doc1 = new ToDoDocument("Name1", "Context1", null);
+		doc1.setNumber(1);
+		ToDoDocument doc2 = new ToDoDocument("Name2", "Context2", null);
+		doc2.setNumber(2);
+		ToDoDocument doc3 = new ToDoDocument("Name3", "Context3", null);
+		doc3.setNumber(3);
+		ToDoDocument doc4 = new ToDoDocument("Name4", "Context4", null);
+		doc4.setNumber(3);
+
+		if (doc1.equals(doc2)){
+			Log.d(LOG, "doc 1 equals doc 2");
+		} else {
+			Log.d(LOG, "doc 1 NOT equals doc 2");
+		}
+
+		if (doc3.equals(doc4)){
+			Log.d(LOG, "doc 3 equals doc 4");
+		} else {
+			Log.d(LOG, "doc 3 NOT equals doc 4");
+		}
 	}
 
 	private void showDocument(ToDoDocument toDoDocument) {
