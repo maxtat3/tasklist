@@ -15,10 +15,25 @@ public class ToDoDocument implements Serializable {
 	private String content;
 	private Date createDate;
 
+	/**
+	 * Внутренний номер заметк.
+	 * Используется для идентификации каждой создаваемое заметки.
+	 */
+	private int number = -1;
 
+
+	/**
+	 * Заметка
+	 */
 	public ToDoDocument() {
 	}
 
+	/**
+	 * Заметка
+	 * @param name имя
+	 * @param content создержимое
+	 * @param createDate дата создания
+	 */
 	public ToDoDocument(String name, String content, Date createDate) {
 		super();
 		this.name = name;
@@ -26,10 +41,10 @@ public class ToDoDocument implements Serializable {
 		this.createDate = createDate;
 	}
 
-
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
 	}
+
 
 	public String getName() {
 		return name;
@@ -55,10 +70,26 @@ public class ToDoDocument implements Serializable {
 		this.createDate = createDate;
 	}
 
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
 
 	@Override
 	public String toString() {
 		return name;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof ToDoDocument)){
+			return false;
+		}
+		ToDoDocument doc = (ToDoDocument) obj;
+		return doc.getNumber() == this.number;
+	}
 }

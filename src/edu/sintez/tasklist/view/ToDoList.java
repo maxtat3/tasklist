@@ -28,6 +28,9 @@ public class ToDoList extends Activity {
 
 	private ListView listTasks;
 
+	private List<ToDoDocument> listDocs;
+	private ArrayAdapter<ToDoDocument> arrayAdapter;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -79,12 +82,12 @@ public class ToDoList extends Activity {
 		ToDoDocument doc2 = new ToDoDocument("Name2", "Context2", null);
 		ToDoDocument doc3 = new ToDoDocument("Name3", "Context3", null);
 
-		List<ToDoDocument> listDocument = new ArrayList<ToDoDocument>();
-		listDocument.add(doc1);
-		listDocument.add(doc2);
-		listDocument.add(doc3);
+		listDocs = new ArrayList<ToDoDocument>();
+		listDocs.add(doc1);
+		listDocs.add(doc2);
+		listDocs.add(doc3);
 
-		ArrayAdapter<ToDoDocument> arrayAdapter = new ArrayAdapter<ToDoDocument>(this, R.layout.pattern_lw_row, listDocument);
+		arrayAdapter = new ArrayAdapter<ToDoDocument>(this, R.layout.pattern_lw_row, listDocs);
 		listTasks.setAdapter(arrayAdapter);
 	}
 
