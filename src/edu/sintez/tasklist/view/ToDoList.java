@@ -3,13 +3,13 @@ package edu.sintez.tasklist.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 import edu.sintez.tasklist.R;
 import edu.sintez.tasklist.model.ToDoDocument;
 
@@ -22,6 +22,7 @@ import java.util.List;
  */
 public class ToDoList extends Activity {
 
+	private static final String LOG = ToDoList.class.getName();
 	public static final int TO_DO_DETAILS_REQUEST = 1000;
 	public static final String TO_DO_DOCUMENTS = "edu.sintez.model.ToDoDocument";
 
@@ -49,22 +50,22 @@ public class ToDoList extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()){
 			case R.id.item1_new_doc:
-				Toast.makeText(this, "press new document", Toast.LENGTH_SHORT).show();
+				Log.d(LOG, "new document");
 				break;
 
 			case R.id.item2_add_task:{
 				ToDoDocument doc = new ToDoDocument();
 				doc.setName("doc name");
 				showDocument(doc);
-				Toast.makeText(this, "press new document", Toast.LENGTH_SHORT).show();
+				Log.d(LOG, "add task");
 				return true;
 			}
 
 			case R.id.item3_back:
-				Toast.makeText(this, "pressed Back", Toast.LENGTH_SHORT).show();
+				Log.d(LOG, "back");
 				break;
 			case R.id.item4_save:
-				Toast.makeText(this, "pressed save", Toast.LENGTH_SHORT).show();
+				Log.d(LOG, "save");
 				break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -106,10 +107,10 @@ public class ToDoList extends Activity {
 		if (requestCode == TO_DO_DETAILS_REQUEST)
 			switch (resultCode){
 				case RESULT_CANCELED:
-					Toast.makeText(this, "cancel", Toast.LENGTH_SHORT).show();
+					Log.d(LOG, "back");
 					break;
 				case ToDoDetail.RESULT_SAVE:
-					Toast.makeText(this, "saved", Toast.LENGTH_SHORT).show();
+					Log.d(LOG, "save");
 					break;
 			}
 	}

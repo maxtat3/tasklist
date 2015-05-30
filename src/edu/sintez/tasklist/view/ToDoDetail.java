@@ -2,6 +2,7 @@ package edu.sintez.tasklist.view;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import edu.sintez.tasklist.model.ToDoDocument;
  */
 public class ToDoDetail extends Activity {
 
+	public static final String LOG = ToDoDetail.class.getName();
 	public static final int RESULT_SAVE = 1;
 
 	private TextView textView;
@@ -43,13 +45,13 @@ public class ToDoDetail extends Activity {
 		switch (item.getItemId()){
 			case R.id.item3_back:
 				setResult(RESULT_CANCELED);
-				Toast.makeText(this, "press back", Toast.LENGTH_SHORT).show();
+				Log.d(LOG, "back");
 				finish();
 				break;
 
 			case R.id.item4_save:
 				setResult(RESULT_SAVE);
-				Toast.makeText(this, "press save", Toast.LENGTH_SHORT).show();
+				Log.d(LOG, "save");
 				finish();
 				break;
 		}
