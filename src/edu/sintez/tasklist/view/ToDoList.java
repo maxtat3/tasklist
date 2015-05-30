@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -32,6 +34,7 @@ public class ToDoList extends Activity {
 		setContentView(R.layout.activity_todo_list);
 
 		listTasks = (ListView) findViewById(R.id.lw_tasks);
+		listTasks.setOnItemClickListener(new ListViewClickListener());
 
 		fillListTasks();
 	}
@@ -81,4 +84,10 @@ public class ToDoList extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	private class ListViewClickListener implements android.widget.AdapterView.OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			Toast.makeText(getApplicationContext(), "pos = " + position, Toast.LENGTH_SHORT).show();
+		}
+	}
 }
