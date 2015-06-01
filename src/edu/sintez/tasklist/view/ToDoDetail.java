@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.TextView;
 import edu.sintez.tasklist.R;
 import edu.sintez.tasklist.model.ToDoDocument;
@@ -20,20 +21,21 @@ public class ToDoDetail extends Activity {
 	public static final int RESULT_DELETE = 2;
 	public static final int NAME_LEN = 30;
 
-	private TextView textView;
+	private EditText etContent;
 
 	private ToDoDocument doc;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_todo_detail);
 
-		textView = (TextView) findViewById(R.id.et);
+		etContent = (EditText) findViewById(R.id.et);
 
 		doc = (ToDoDocument) getIntent().getSerializableExtra(ToDoList.TO_DO_DOCUMENTS);
 		setTitle(doc.getName());
-		textView.setText(doc.getName());
+		etContent.setText(doc.getName());
 	}
 
 	@Override
@@ -64,7 +66,7 @@ public class ToDoDetail extends Activity {
 	}
 
 	private String getDocName(){
-		StringBuilder sb = new StringBuilder(textView.getText());
+		StringBuilder sb = new StringBuilder(etContent.getText());
 		if (sb.length() > NAME_LEN){
 			sb.delete(NAME_LEN, sb.length()).append("...");
 		}
