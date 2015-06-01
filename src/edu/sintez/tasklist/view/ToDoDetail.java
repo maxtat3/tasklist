@@ -18,6 +18,7 @@ public class ToDoDetail extends Activity {
 
 	public static final String LOG = ToDoDetail.class.getName();
 	public static final int RESULT_SAVE = 1;
+	public static final int RESULT_DELETE = 2;
 
 	private TextView textView;
 
@@ -54,6 +55,9 @@ public class ToDoDetail extends Activity {
 				Log.d(LOG, "save");
 				finish();
 				break;
+			case R.id.item5_del:
+				setResult(RESULT_DELETE, getIntent());
+				finish();
 		}
 		return super.onOptionsItemSelected(item);
 	}

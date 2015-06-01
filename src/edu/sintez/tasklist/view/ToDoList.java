@@ -103,6 +103,11 @@ public class ToDoList extends Activity {
 		startActivityForResult(intentToDoDetails, TO_DO_DETAILS_REQUEST);
 	}
 
+	private void deleteDocument(ToDoDocument doc){
+		listDocs.remove(doc);
+		arrayAdapter.notifyDataSetChanged();
+	}
+
 	private class ListViewClickListener implements android.widget.AdapterView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -123,6 +128,9 @@ public class ToDoList extends Activity {
 					addDocument(receiveDoc);
 					Log.d(LOG, "save");
 					break;
+				case ToDoDetail.RESULT_DELETE:
+					ToDoDocument doc = (ToDoDocument) data.getSerializableExtra(TO_DO_DOCUMENTS);
+					deleteDocument(doc);
 			}
 	}
 

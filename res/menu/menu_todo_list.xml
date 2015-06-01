@@ -5,5 +5,6 @@
 	<item android:id="@+id/item2_add_task" android:title="@string/add_task"/>
 	<item android:id="@+id/item3_back" android:title="@string/back"/>
 	<item android:id="@+id/item4_save" android:title="@string/save"/>
+	<item android:id="@+id/item5_del" android:title="@string/del"/>
 
 </menu>
