@@ -35,7 +35,7 @@ public class ToDoDetail extends Activity {
 
 		doc = (ToDoDocument) getIntent().getSerializableExtra(ToDoList.TO_DO_DOCUMENTS);
 		setTitle(doc.getName());
-		etContent.setText(doc.getName());
+		etContent.setText(doc.getContent());
 	}
 
 	@Override
