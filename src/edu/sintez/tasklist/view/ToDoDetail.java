@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 import edu.sintez.tasklist.R;
 import edu.sintez.tasklist.model.ToDoDocument;
 
@@ -19,9 +18,11 @@ public class ToDoDetail extends Activity {
 	public static final String LOG = ToDoDetail.class.getName();
 	public static final int RESULT_SAVE = 1;
 	public static final int RESULT_DELETE = 2;
+	public static final int NAME_LEN = 30;
 
 	private TextView textView;
 
+	private ToDoDocument doc;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +31,9 @@ public class ToDoDetail extends Activity {
 
 		textView = (TextView) findViewById(R.id.et);
 
-		ToDoDocument toDoDocument = (ToDoDocument) getIntent().getSerializableExtra(ToDoList.TO_DO_DOCUMENTS);
-		setTitle(toDoDocument.getName());
-		textView.setText(toDoDocument.getName());
+		doc = (ToDoDocument) getIntent().getSerializableExtra(ToDoList.TO_DO_DOCUMENTS);
+		setTitle(doc.getName());
+		textView.setText(doc.getName());
 	}
 
 	@Override
@@ -60,5 +61,14 @@ public class ToDoDetail extends Activity {
 				finish();
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private String getDocName(){
+		StringBuilder sb = new StringBuilder(textView.getText());
+		if (sb.length() > NAME_LEN){
+			sb.delete(NAME_LEN, sb.length()).append("...");
+		}
+		String text = sb.toString().trim().split("\n")[0];
+		return (text.length() > 0) ? text : doc.getName();
 	}
 }
