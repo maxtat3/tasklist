@@ -82,9 +82,9 @@ public class ToDoList extends Activity {
 	 * Имитация заполнение тасков
 	 */
 	private void fillListTasks() {
-		ToDoDocument doc1 = new ToDoDocument("Name1", "Context1", null);
-		ToDoDocument doc2 = new ToDoDocument("Name2", "Context2", null);
-		ToDoDocument doc3 = new ToDoDocument("Name3", "Context3", null);
+		ToDoDocument doc1 = new ToDoDocument("Name1", "Context1", null, 0);
+		ToDoDocument doc2 = new ToDoDocument("Name2", "Context2", null, 1);
+		ToDoDocument doc3 = new ToDoDocument("Name3", "Context3", null, 2);
 
 		listDocs.add(doc1);
 		listDocs.add(doc2);

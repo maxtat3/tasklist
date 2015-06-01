@@ -41,6 +41,22 @@ public class ToDoDocument implements Serializable {
 		this.createDate = createDate;
 	}
 
+	/**
+	 * Заметка
+	 * @param name имя
+	 * @param content создержимое
+	 * @param createDate дата создания
+	 * @param number внутренний номер заметки
+	 */
+	public ToDoDocument(String name, String content, Date createDate, int number) {
+		super();
+		this.name = name;
+		this.content = content;
+		this.createDate = createDate;
+		this.number = number;
+	}
+
+
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
 	}
