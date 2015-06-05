@@ -61,6 +61,7 @@ public class ToDoDetail extends Activity {
 				break;
 
 			case R.id.item5_del:
+				Log.d(LOG, "del");
 				setResult(RESULT_DELETE, getIntent());
 				finish();
 		}

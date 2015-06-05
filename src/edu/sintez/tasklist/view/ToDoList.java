@@ -12,9 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import edu.sintez.tasklist.R;
 import edu.sintez.tasklist.model.ToDoDocument;
-
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -25,11 +23,13 @@ public class ToDoList extends Activity {
 	private static final String LOG = ToDoList.class.getName();
 	public static final int TO_DO_DETAILS_REQUEST = 1000;
 	public static final String TO_DO_DOCUMENTS = "edu.sintez.model.ToDoDocument";
+	public static final String DEFAULT_NAME = "New task";
 
 	private ListView lvTasks;
 
 	private List<ToDoDocument> listDocs;
 	private ArrayAdapter<ToDoDocument> arrayAdapter;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,26 +55,43 @@ public class ToDoList extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()){
-			case R.id.item1_new_doc:
-				Log.d(LOG, "new document");
-				break;
-
 			case R.id.item2_add_task:{
-				ToDoDocument doc = new ToDoDocument();
-				doc.setName("doc name");
-				showDocument(doc);
 				Log.d(LOG, "add task");
+				ToDoDocument doc = new ToDoDocument();
+				doc.setName(DEFAULT_NAME);
+				showDocument(doc);
 				return true;
 			}
 
 			case R.id.item3_back:
 				Log.d(LOG, "back");
 				break;
+
 			case R.id.item4_save:
 				Log.d(LOG, "save");
 				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == TO_DO_DETAILS_REQUEST)
+			switch (resultCode){
+				case RESULT_CANCELED:
+					Log.d(LOG, "back");
+					break;
+
+				case ToDoDetail.RESULT_SAVE:
+					Log.d(LOG, "save");
+					ToDoDocument receiveDoc = (ToDoDocument) data.getSerializableExtra(TO_DO_DOCUMENTS);
+					addDocument(receiveDoc);
+					break;
+
+				case ToDoDetail.RESULT_DELETE:
+					ToDoDocument doc = (ToDoDocument) data.getSerializableExtra(TO_DO_DOCUMENTS);
+					deleteDocument(doc);
+			}
 	}
 
 	/**
@@ -96,7 +113,7 @@ public class ToDoList extends Activity {
 			Log.d(LOG, "new doc");
 			listDocs.add(doc);
 		} else {
-			Log.d(LOG, "concurency doc");
+			Log.d(LOG, "concurrency doc");
 			listDocs.set(doc.getNumber(), doc); /*такой локумент уже есть - редактируем и сохраняем*/
 		}
 		Collections.sort(listDocs);
@@ -121,26 +138,7 @@ public class ToDoList extends Activity {
 			doc.setNumber(position);
 			showDocument(doc);
 		}
-	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == TO_DO_DETAILS_REQUEST)
-			switch (resultCode){
-				case RESULT_CANCELED:
-					Log.d(LOG, "back");
-					break;
-
-				case ToDoDetail.RESULT_SAVE:
-					Log.d(LOG, "save");
-					ToDoDocument receiveDoc = (ToDoDocument) data.getSerializableExtra(TO_DO_DOCUMENTS);
-					addDocument(receiveDoc);
-					break;
-
-				case ToDoDetail.RESULT_DELETE:
-					ToDoDocument doc = (ToDoDocument) data.getSerializableExtra(TO_DO_DOCUMENTS);
-					deleteDocument(doc);
-			}
 	}
 
 }
