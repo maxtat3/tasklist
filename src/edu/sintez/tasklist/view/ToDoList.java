@@ -13,8 +13,8 @@ import android.widget.ListView;
 import edu.sintez.tasklist.R;
 import edu.sintez.tasklist.model.ToDoDocument;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -31,7 +31,6 @@ public class ToDoList extends Activity {
 	private List<ToDoDocument> listDocs;
 	private ArrayAdapter<ToDoDocument> arrayAdapter;
 
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,7 +39,8 @@ public class ToDoList extends Activity {
 		lvTasks = (ListView) findViewById(R.id.lw_tasks);
 		lvTasks.setOnItemClickListener(new ListViewClickListener());
 
-		listDocs = new ArrayList<ToDoDocument>();
+//		listDocs = new ArrayList<ToDoDocument>();
+		listDocs = new CopyOnWriteArrayList<ToDoDocument>();
 		arrayAdapter = new ArrayAdapter<ToDoDocument>(this, R.layout.pattern_lw_row, listDocs);
 		lvTasks.setAdapter(arrayAdapter);
 
@@ -91,7 +91,20 @@ public class ToDoList extends Activity {
 		listDocs.add(doc3);
 	}
 
-	private void addDocument(ToDoDocument doc) {
+	private void addDocument(ToDoDocument doc){
+		Log.d(LOG, "change doc method");
+		for (ToDoDocument existDoc : listDocs) {
+			/*такой локумент уже есть - редактируем и сохраняем*/
+			if (existDoc.getNumber() == doc.getNumber()) {
+				Log.d(LOG, "is present doc - change");
+				listDocs.remove(existDoc);
+				listDocs.add(doc);
+				arrayAdapter.notifyDataSetChanged();
+				return;
+			}
+		}
+		/*это новый документ - сохраняем его*/
+		Log.d(LOG, "new doc - dave");
 		listDocs.add(doc);
 		doc.setNumber(listDocs.indexOf(doc));
 		arrayAdapter.notifyDataSetChanged();
@@ -123,11 +136,13 @@ public class ToDoList extends Activity {
 				case RESULT_CANCELED:
 					Log.d(LOG, "back");
 					break;
+
 				case ToDoDetail.RESULT_SAVE:
+					Log.d(LOG, "save");
 					ToDoDocument receiveDoc = (ToDoDocument) data.getSerializableExtra(TO_DO_DOCUMENTS);
 					addDocument(receiveDoc);
-					Log.d(LOG, "save");
 					break;
+
 				case ToDoDetail.RESULT_DELETE:
 					ToDoDocument doc = (ToDoDocument) data.getSerializableExtra(TO_DO_DOCUMENTS);
 					deleteDocument(doc);
