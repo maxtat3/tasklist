@@ -7,9 +7,10 @@ import java.util.Date;
 /**
  * Заметка
  */
-public class ToDoDocument implements Serializable {
+public class ToDoDocument implements Serializable, Comparable<ToDoDocument> {
 
 	private static final long serialVersionUID = -437658343920952013L;
+	public static final int DOC_DO_NOT_EXIST = -1;
 
 	private String name;
 	private String content;
@@ -19,7 +20,7 @@ public class ToDoDocument implements Serializable {
 	 * Внутренний номер заметк.
 	 * Используется для идентификации каждой создаваемое заметки.
 	 */
-	private int number = -1;
+	private int number = DOC_DO_NOT_EXIST;
 
 
 	/**
@@ -101,11 +102,18 @@ public class ToDoDocument implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof ToDoDocument)){
-			return false;
-		}
-		ToDoDocument doc = (ToDoDocument) obj;
-		return doc.getNumber() == this.number;
+	public int compareTo(ToDoDocument anotherDoc) {
+		return anotherDoc.getCreateDate().compareTo(createDate);
 	}
+
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (!(obj instanceof ToDoDocument)){
+//			return false;
+//		}
+//		ToDoDocument doc = (ToDoDocument) obj;
+//		return doc.getNumber() == this.number;
+//	}
+
+
 }

@@ -13,8 +13,7 @@ import android.widget.ListView;
 import edu.sintez.tasklist.R;
 import edu.sintez.tasklist.model.ToDoDocument;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
@@ -41,7 +40,6 @@ public class ToDoList extends Activity {
 		lvTasks.setOnItemClickListener(new ListViewClickListener());
 
 		listDocs = new ArrayList<ToDoDocument>();
-//		listDocs = new CopyOnWriteArrayList<ToDoDocument>();
 		arrayAdapter = new ArrayAdapter<ToDoDocument>(this, R.layout.pattern_lw_row, listDocs);
 		lvTasks.setAdapter(arrayAdapter);
 
@@ -83,9 +81,9 @@ public class ToDoList extends Activity {
 	 * Имитация заполнение тасков
 	 */
 	private void fillListTasks() {
-		ToDoDocument doc1 = new ToDoDocument("Name1", "Context1", null, 0);
-		ToDoDocument doc2 = new ToDoDocument("Name2", "Context2", null, 1);
-		ToDoDocument doc3 = new ToDoDocument("Name3", "Context3", null, 2);
+		ToDoDocument doc1 = new ToDoDocument("Name1", "Context1", new Date(), 0);
+		ToDoDocument doc2 = new ToDoDocument("Name2", "Context2", new Date(), 1);
+		ToDoDocument doc3 = new ToDoDocument("Name3", "Context3", new Date(), 2);
 
 		listDocs.add(doc1);
 		listDocs.add(doc2);
@@ -93,11 +91,15 @@ public class ToDoList extends Activity {
 	}
 
 	private void addDocument(ToDoDocument doc) {
-		if (doc.getNumber() == -1) { /*это новый документ - сохраняем его*/
+		doc.setCreateDate(new Date());
+		if (doc.getNumber() == ToDoDocument.DOC_DO_NOT_EXIST) { /*это новый документ - сохраняем его*/
+			Log.d(LOG, "new doc");
 			listDocs.add(doc);
 		} else {
+			Log.d(LOG, "concurency doc");
 			listDocs.set(doc.getNumber(), doc); /*такой локумент уже есть - редактируем и сохраняем*/
 		}
+		Collections.sort(listDocs);
 		arrayAdapter.notifyDataSetChanged();
 	}
 
@@ -108,7 +110,7 @@ public class ToDoList extends Activity {
 	}
 
 	private void deleteDocument(ToDoDocument doc){
-		listDocs.remove(doc);
+		listDocs.remove(doc.getNumber());
 		arrayAdapter.notifyDataSetChanged();
 	}
 
@@ -116,6 +118,7 @@ public class ToDoList extends Activity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			ToDoDocument doc = (ToDoDocument) parent.getAdapter().getItem(position);
+			doc.setNumber(position);
 			showDocument(doc);
 		}
 	}
@@ -140,29 +143,4 @@ public class ToDoList extends Activity {
 			}
 	}
 
-	/**
-	 * Тестирование сравнения двух документов между собой
-	 */
-	private void testDocEquals(){
-		ToDoDocument doc1 = new ToDoDocument("Name1", "Context1", null);
-		doc1.setNumber(1);
-		ToDoDocument doc2 = new ToDoDocument("Name2", "Context2", null);
-		doc2.setNumber(2);
-		ToDoDocument doc3 = new ToDoDocument("Name3", "Context3", null);
-		doc3.setNumber(3);
-		ToDoDocument doc4 = new ToDoDocument("Name4", "Context4", null);
-		doc4.setNumber(3);
-
-		if (doc1.equals(doc2)){
-			Log.d(LOG, "doc 1 equals doc 2");
-		} else {
-			Log.d(LOG, "doc 1 NOT equals doc 2");
-		}
-
-		if (doc3.equals(doc4)){
-			Log.d(LOG, "doc 3 equals doc 4");
-		} else {
-			Log.d(LOG, "doc 3 NOT equals doc 4");
-		}
-	}
 }
