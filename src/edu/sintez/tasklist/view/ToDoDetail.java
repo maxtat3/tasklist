@@ -1,6 +1,8 @@
 package edu.sintez.tasklist.view;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -50,19 +52,18 @@ public class ToDoDetail extends Activity {
 				Log.d(LOG, "back");
 				setResult(RESULT_CANCELED);
 				finish();
-				break;
+				return true;
 
 			case R.id.item3_save:
 				Log.d(LOG, "save");
 				saveDocument();
-				setResult(RESULT_SAVE, getIntent());
 				finish();
-				break;
+				return true;
 
 			case R.id.item4_del:
 				Log.d(LOG, "del");
-				setResult(RESULT_DELETE, getIntent());
-				finish();
+				alertDialogDel();
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -70,6 +71,7 @@ public class ToDoDetail extends Activity {
 	private void saveDocument(){
 		doc.setContent(etContent.getText().toString());
 		doc.setName(getDocName());
+		setResult(RESULT_SAVE, getIntent());
 	}
 
 	private String getDocName(){
@@ -79,5 +81,26 @@ public class ToDoDetail extends Activity {
 		}
 		String text = sb.toString().trim().split("\n")[0];
 		return (text.length() > 0) ? text : doc.getName();
+	}
+
+	private void alertDialogDel(){
+		AlertDialog.Builder adb = new AlertDialog.Builder(this);
+		adb.setMessage("подтвержедение удалить ?");
+
+		adb.setPositiveButton("del", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				setResult(RESULT_DELETE, getIntent());
+				finish();
+			}
+		});
+		adb.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+
+		AlertDialog alertDialog = adb.create();
+		alertDialog.show();
 	}
 }
