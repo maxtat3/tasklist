@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TextView;
 import edu.sintez.tasklist.R;
 import edu.sintez.tasklist.model.ToDoDocument;
 
@@ -40,27 +39,27 @@ public class ToDoDetail extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu_todo_list, menu);
+		getMenuInflater().inflate(R.menu.menu_todo_details, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()){
-			case R.id.item3_back:
+			case R.id.item2_back:
 				Log.d(LOG, "back");
 				setResult(RESULT_CANCELED);
 				finish();
 				break;
 
-			case R.id.item4_save:
+			case R.id.item3_save:
 				Log.d(LOG, "save");
 				saveDocument();
 				setResult(RESULT_SAVE, getIntent());
 				finish();
 				break;
 
-			case R.id.item5_del:
+			case R.id.item4_del:
 				Log.d(LOG, "del");
 				setResult(RESULT_DELETE, getIntent());
 				finish();

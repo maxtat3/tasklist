@@ -55,21 +55,13 @@ public class ToDoList extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()){
-			case R.id.item2_add_task:{
+			case R.id.item1_add_task:{
 				Log.d(LOG, "add task");
 				ToDoDocument doc = new ToDoDocument();
 				doc.setName(DEFAULT_NAME);
 				showDocument(doc);
 				return true;
 			}
-
-			case R.id.item3_back:
-				Log.d(LOG, "back");
-				break;
-
-			case R.id.item4_save:
-				Log.d(LOG, "save");
-				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
