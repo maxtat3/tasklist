@@ -13,6 +13,7 @@ import android.widget.ListView;
 import edu.sintez.tasklist.R;
 import edu.sintez.tasklist.model.ToDoDocument;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -39,8 +40,8 @@ public class ToDoList extends Activity {
 		lvTasks = (ListView) findViewById(R.id.lw_tasks);
 		lvTasks.setOnItemClickListener(new ListViewClickListener());
 
-//		listDocs = new ArrayList<ToDoDocument>();
-		listDocs = new CopyOnWriteArrayList<ToDoDocument>();
+		listDocs = new ArrayList<ToDoDocument>();
+//		listDocs = new CopyOnWriteArrayList<ToDoDocument>();
 		arrayAdapter = new ArrayAdapter<ToDoDocument>(this, R.layout.pattern_lw_row, listDocs);
 		lvTasks.setAdapter(arrayAdapter);
 
@@ -91,22 +92,12 @@ public class ToDoList extends Activity {
 		listDocs.add(doc3);
 	}
 
-	private void addDocument(ToDoDocument doc){
-		Log.d(LOG, "change doc method");
-		for (ToDoDocument existDoc : listDocs) {
-			/*такой локумент уже есть - редактируем и сохраняем*/
-			if (existDoc.getNumber() == doc.getNumber()) {
-				Log.d(LOG, "is present doc - change");
-				listDocs.remove(existDoc);
-				listDocs.add(doc);
-				arrayAdapter.notifyDataSetChanged();
-				return;
-			}
+	private void addDocument(ToDoDocument doc) {
+		if (doc.getNumber() == -1) { /*это новый документ - сохраняем его*/
+			listDocs.add(doc);
+		} else {
+			listDocs.set(doc.getNumber(), doc); /*такой локумент уже есть - редактируем и сохраняем*/
 		}
-		/*это новый документ - сохраняем его*/
-		Log.d(LOG, "new doc - dave");
-		listDocs.add(doc);
-		doc.setNumber(listDocs.indexOf(doc));
 		arrayAdapter.notifyDataSetChanged();
 	}
 
