@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 import edu.sintez.tasklist.R;
 import edu.sintez.tasklist.model.ToDoDocument;
 
@@ -21,6 +22,11 @@ public class ToDoDetail extends Activity {
 	public static final int NAME_LEN = 30;
 	public static final int RESULT_SAVE = 1;
 	public static final int RESULT_DELETE = 2;
+	public static final String MSG_DEL_THIS_DOC = "Вы действительно хотите удалить эту заметку ?";
+	public static final String MSG_DOC_IS_CHANGE_CONFIRM_SAVE = "Заметка была изменена, сохранить ?";
+	public static final String YES = "Да";
+	public static final String CANCEL = "Отмена";
+	public static final String NO = "Нет";
 
 	private EditText etContent;
 
@@ -50,8 +56,14 @@ public class ToDoDetail extends Activity {
 		switch (item.getItemId()){
 			case R.id.item2_back:
 				Log.d(LOG, "back");
-				setResult(RESULT_CANCELED);
-				finish();
+				Log.d(LOG, "is change ? " + isChangeDoc());
+				if (isChangeDoc()) {
+					dialogConfirmSave();
+				} else {
+					setResult(RESULT_CANCELED, getIntent());
+					finish();
+				}
+				Log.d(LOG, "finish");
 				return true;
 
 			case R.id.item3_save:
@@ -62,16 +74,29 @@ public class ToDoDetail extends Activity {
 
 			case R.id.item4_del:
 				Log.d(LOG, "del");
-				alertDialogDel();
+				dialogConfirmDel();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	private void saveDocument(){
-		doc.setContent(etContent.getText().toString());
-		doc.setName(getDocName());
-		setResult(RESULT_SAVE, getIntent());
+		if (isChangeDoc()) {
+			doc.setContent(etContent.getText().toString());
+			doc.setName(getDocName());
+			setResult(RESULT_SAVE, getIntent());
+		} else {
+			setResult(RESULT_CANCELED, getIntent());
+			Toast.makeText(this, "Документ " + doc.getName() + " не был изменен.", Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	private boolean isChangeDoc() {
+		if (doc.getContent() != null && etContent.getText().toString().equals(doc.getContent())) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	private String getDocName(){
@@ -83,18 +108,18 @@ public class ToDoDetail extends Activity {
 		return (text.length() > 0) ? text : doc.getName();
 	}
 
-	private void alertDialogDel(){
+	private void dialogConfirmDel(){
 		AlertDialog.Builder adb = new AlertDialog.Builder(this);
-		adb.setMessage("подтвержедение удалить ?");
+		adb.setMessage(MSG_DEL_THIS_DOC);
 
-		adb.setPositiveButton("del", new DialogInterface.OnClickListener() {
+		adb.setPositiveButton(YES, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				setResult(RESULT_DELETE, getIntent());
 				finish();
 			}
 		});
-		adb.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+		adb.setNegativeButton(CANCEL, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 			}
@@ -102,5 +127,31 @@ public class ToDoDetail extends Activity {
 
 		AlertDialog alertDialog = adb.create();
 		alertDialog.show();
+
 	}
+
+	private void dialogConfirmSave(){
+		AlertDialog.Builder adb = new AlertDialog.Builder(this);
+		adb.setMessage(MSG_DOC_IS_CHANGE_CONFIRM_SAVE);
+
+		adb.setPositiveButton(YES, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				saveDocument();
+				setResult(RESULT_SAVE, getIntent());
+				finish();
+			}
+		});
+		adb.setNegativeButton(NO, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				setResult(RESULT_CANCELED, getIntent());
+				finish();
+			}
+		});
+
+		AlertDialog alertDialog = adb.create();
+		alertDialog.show();
+	}
+
 }
