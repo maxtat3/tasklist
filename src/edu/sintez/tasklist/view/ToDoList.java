@@ -58,7 +58,7 @@ public class ToDoList extends Activity {
 		super.onStart();
 		arrayAdapter = new ArrayAdapter<ToDoDocument>(this, R.layout.pattern_lw_row, listDocs);
 		lvTasks.setAdapter(arrayAdapter);
-		arrayAdapter.getFilter().filter(etFilterTasks.getText().toString());
+		checkFilterEnable();
 	}
 
 	@Override
@@ -99,6 +99,15 @@ public class ToDoList extends Activity {
 					ToDoDocument doc = (ToDoDocument) data.getSerializableExtra(TO_DO_DOCUMENTS);
 					deleteDocument(doc);
 			}
+	}
+
+	private void checkFilterEnable() {
+		if (listDocs.size() != 0) {
+			etFilterTasks.setEnabled(true);
+			arrayAdapter.getFilter().filter(etFilterTasks.getText().toString());
+		} else {
+			etFilterTasks.setEnabled(false);
+		}
 	}
 
 	/**
