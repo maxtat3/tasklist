@@ -28,7 +28,6 @@ public class ToDoList extends Activity {
 
 	public static final int TO_DO_DETAILS_REQUEST = 1000;
 	public static final String TO_DO_DOCUMENTS = "edu.sintez.model.ToDoDocument";
-	public static final String DEFAULT_NAME = "New task";
 
 	private ListView lvTasks;
 	private EditText etFilterTasks;
@@ -79,9 +78,6 @@ public class ToDoList extends Activity {
 		switch (item.getItemId()){
 			case R.id.item1_add_task:{
 				Log.d(LOG, "add task");
-//				ToDoDocument doc = new ToDoDocument();
-//				doc.setName(DEFAULT_NAME);
-//				showDocument(doc);
 
 				Bundle bundle = new Bundle();
 				bundle.putInt(AppContext.KEY_TYPE_ACTION, AppContext.VAL_ACTION_NEWTASK);
@@ -93,26 +89,6 @@ public class ToDoList extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-//	@Override
-//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		if (requestCode == TO_DO_DETAILS_REQUEST)
-//			switch (resultCode){
-//				case RESULT_CANCELED:
-//					Log.d(LOG, "back");
-//					break;
-//
-//				case ToDoDetail.RESULT_SAVE:
-//					Log.d(LOG, "save");
-//					ToDoDocument receiveDoc = (ToDoDocument) data.getSerializableExtra(TO_DO_DOCUMENTS);
-//					addDocument(receiveDoc);
-//					break;
-//
-//				case ToDoDetail.RESULT_DELETE:
-//					ToDoDocument doc = (ToDoDocument) data.getSerializableExtra(TO_DO_DOCUMENTS);
-//					deleteDocument(doc);
-//			}
-//	}
 
 	private void checkFilterEnable() {
 		if (listDocs.size() != 0) {
@@ -136,33 +112,9 @@ public class ToDoList extends Activity {
 		listDocs.add(doc3);
 	}
 
-//	private void addDocument(ToDoDocument doc) {
-//		doc.setCreateDate(new Date());
-//
-//		if (doc.getNumber() == ToDoDocument.DOC_DO_NOT_EXIST) { /*это новый документ - сохраняем его*/
-//			Log.d(LOG, "new doc");
-//			listDocs.add(doc);
-//		} else {
-//			Log.d(LOG, "exist doc");
-//			listDocs.set(doc.getNumber(), doc); /*такой локумент уже есть - редактируем и сохраняем*/
-//		}
-//		Collections.sort(listDocs);
-//		arrayAdapter.notifyDataSetChanged();
-//		updateIndices();
-//
-//		for (ToDoDocument listDoc : listDocs) {
-//			Log.d(LOG, "doc num = " + String.valueOf(listDoc.getNumber()));
-//		}
-//		Log.d(LOG, "---");
-//	}
 
-	private void updateIndices(){
-		ToDoDocument doc;
-		for (int i = 0; i < listDocs.size(); i++) {
-			doc = listDocs.get(i);
-			doc.setNumber(i);
-		}
-	}
+
+
 
 	private void showDocument(ToDoDocument toDoDocument) {
 		Intent intentToDoDetails = new Intent(this, ToDoDetail.class);
@@ -173,22 +125,21 @@ public class ToDoList extends Activity {
 	private void deleteDocument(ToDoDocument doc){
 		listDocs.remove(doc.getNumber());
 		arrayAdapter.notifyDataSetChanged();
-		updateIndices();
 	}
 
 	private class ListViewClickListener implements android.widget.AdapterView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			ToDoDocument doc = (ToDoDocument) parent.getAdapter().getItem(position);
-			doc.setNumber(position);
-			showDocument(doc);
+			Bundle bundle = new Bundle();
+			bundle.putInt(AppContext.KEY_TYPE_ACTION, AppContext.VAL_ACTION_UPDATE);
+			bundle.putInt(AppContext.KEY_DOCINDEX, ((ToDoDocument)parent.getAdapter().getItem(position)).getNumber());
+			startActivity(intentDetail.putExtras(bundle));
 		}
 	}
 
 	private class FilterTaskChangeListener implements TextWatcher {
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
 		}
 
 		@Override
@@ -198,7 +149,6 @@ public class ToDoList extends Activity {
 
 		@Override
 		public void afterTextChanged(Editable s) {
-
 		}
 	}
 }

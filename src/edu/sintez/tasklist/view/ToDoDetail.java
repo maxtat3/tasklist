@@ -13,6 +13,8 @@ import edu.sintez.tasklist.R;
 import edu.sintez.tasklist.model.AppContext;
 import edu.sintez.tasklist.model.ToDoDocument;
 
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 
@@ -30,15 +32,15 @@ public class ToDoDetail extends Activity {
 	public static final String YES = "Да";
 	public static final String CANCEL = "Отмена";
 	public static final String NO = "Нет";
+	public static final String DEFAULT_NAME = "New task";
 
+	private ToDoDocument doc;
 	private List<ToDoDocument> listDocs;
 
 	private int typeAction;
-	private int docIndex;
+	private int keyDocIndex;
 
 	private EditText etContent;
-
-	private ToDoDocument doc;
 
 
 	@Override
@@ -53,9 +55,22 @@ public class ToDoDetail extends Activity {
 			Log.d(LOG, "doc name = " + listDoc.getName());
 		}
 
-//		doc = (ToDoDocument) getIntent().getSerializableExtra(ToDoList.TO_DO_DOCUMENTS);
-//		setTitle(doc.getName());
-//		etContent.setText(doc.getContent());
+		typeAction = getIntent().getExtras().getInt(AppContext.KEY_TYPE_ACTION);
+
+		selDocAction(typeAction);
+	}
+
+	private void selDocAction(int action) {
+		switch (action) {
+			case AppContext.VAL_ACTION_NEWTASK:
+				doc = new ToDoDocument();
+				break;
+			case AppContext.VAL_ACTION_UPDATE:
+				keyDocIndex = getIntent().getExtras().getInt(AppContext.KEY_DOCINDEX);
+				doc = listDocs.get(keyDocIndex);
+				etContent.setText(doc.getContent());
+				break;
+		}
 	}
 
 	@Override
@@ -73,7 +88,6 @@ public class ToDoDetail extends Activity {
 				if (isChangeDoc()) {
 					dialogConfirmSave();
 				} else {
-					setResult(RESULT_CANCELED, getIntent());
 					finish();
 				}
 				return true;
@@ -92,33 +106,69 @@ public class ToDoDetail extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void saveDocument(){
-		if (isChangeDoc()) {
-			doc.setContent(etContent.getText().toString());
-			doc.setName(getDocName());
-			setResult(RESULT_SAVE, getIntent());
-		} else {
-			setResult(RESULT_CANCELED, getIntent());
-			Toast.makeText(this, "Документ " + doc.getName() + " не был изменен.", Toast.LENGTH_SHORT).show();
+	private void saveDocument() {
+		switch (typeAction) {
+			case AppContext.VAL_ACTION_NEWTASK:
+				listDocs.add(doc);
+				break;
+			case AppContext.VAL_ACTION_UPDATE:
+				if (!isChangeDoc()) {
+					finish();
+					return;
+				}
+		}
+
+		doc.setCreateDate(new Date());
+		doc.setContent(etContent.getText().toString());
+		doc.setName(getDocName());
+
+		Collections.sort(listDocs);
+		updateIndices();
+	}
+
+	/**
+	 * Обновление индексов списка документов.
+	 * Нужно для правильной работы алгоритма фильтрации документов.
+	 */
+	private void updateIndices(){
+		ToDoDocument doc;
+		for (int i = 0; i < listDocs.size(); i++) {
+			doc = listDocs.get(i);
+			doc.setNumber(i);
 		}
 	}
 
+	/**
+	 * Проверка, редактировался ли документ
+	 * @return true - да (изменения выполнялись) ; false - нет
+	 */
 	private boolean isChangeDoc() {
-		if (doc.getContent() != null && etContent.getText().toString().equals(doc.getContent())) {
+		if (etContent.getText().toString().equals(doc.getContent())) {
 			return false;
 		} else {
 			return true;
 		}
 	}
 
+	/**
+	 * Получение имени документа. Имя берется из содержимого документа.
+	 * Если содержимое документа более NAME_LEN символов
+	 * тогда оно сокращается до NAME_LEN символов. Остальные символы заменяются троеточием.
+	 * Если в содержимом нет ни одного символа, тогда в качестве имени возвращается DEFAULT_NAME.
+	 * @return имя документа
+	 */
 	private String getDocName(){
+		if (etContent.getText().toString().equals("")){
+			return DEFAULT_NAME;
+		}
 		StringBuilder sb = new StringBuilder(etContent.getText());
 		if (sb.length() > NAME_LEN){
 			sb.delete(NAME_LEN, sb.length()).append("...");
 		}
-		String text = sb.toString().trim().split("\n")[0];
-		return (text.length() > 0) ? text : doc.getName();
+		String shortName = sb.toString().trim().split("\n")[0];
+		return (shortName.length() > 0) ? shortName : doc.getName();
 	}
+
 
 	private void dialogConfirmDel(){
 		AlertDialog.Builder adb = new AlertDialog.Builder(this);
@@ -150,7 +200,6 @@ public class ToDoDetail extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				saveDocument();
-				setResult(RESULT_SAVE, getIntent());
 				finish();
 			}
 		});
