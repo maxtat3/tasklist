@@ -25,8 +25,6 @@ public class ToDoDetail extends Activity {
 
 	public static final String LOG = ToDoDetail.class.getName();
 	public static final int NAME_LEN = 30;
-	public static final int RESULT_SAVE = 1;
-	public static final int RESULT_DELETE = 2;
 	public static final String MSG_DEL_THIS_DOC = "Вы действительно хотите удалить эту заметку ?";
 	public static final String MSG_DOC_IS_CHANGE_CONFIRM_SAVE = "Заметка была изменена, сохранить ?";
 	public static final String YES = "Да";
@@ -113,6 +111,7 @@ public class ToDoDetail extends Activity {
 				break;
 			case AppContext.VAL_ACTION_UPDATE:
 				if (!isChangeDoc()) {
+					Toast.makeText(this, "В заметке не было изменений.", Toast.LENGTH_SHORT).show();
 					finish();
 					return;
 				}

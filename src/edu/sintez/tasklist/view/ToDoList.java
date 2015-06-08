@@ -26,9 +26,6 @@ public class ToDoList extends Activity {
 
 	private static final String LOG = ToDoList.class.getName();
 
-	public static final int TO_DO_DETAILS_REQUEST = 1000;
-	public static final String TO_DO_DOCUMENTS = "edu.sintez.model.ToDoDocument";
-
 	private ListView lvTasks;
 	private EditText etFilterTasks;
 
@@ -40,7 +37,6 @@ public class ToDoList extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Log.d(LOG, "@onCreate");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_todo_list);
 
@@ -60,7 +56,6 @@ public class ToDoList extends Activity {
 
 	@Override
 	protected void onStart() {
-		Log.d(LOG, "@onStart");
 		super.onStart();
 		arrayAdapter = new ArrayAdapter<ToDoDocument>(this, R.layout.pattern_lw_row, listDocs);
 		lvTasks.setAdapter(arrayAdapter);
@@ -77,8 +72,6 @@ public class ToDoList extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()){
 			case R.id.item1_add_task:{
-				Log.d(LOG, "add task");
-
 				Bundle bundle = new Bundle();
 				bundle.putInt(AppContext.KEY_TYPE_ACTION, AppContext.VAL_ACTION_NEWTASK);
 				intentDetail.putExtras(bundle);
@@ -90,6 +83,10 @@ public class ToDoList extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Включение возможности фильтрации документов только
+	 * при при наличии хотябы одного документа в списке
+	 */
 	private void checkFilterEnable() {
 		if (listDocs.size() != 0) {
 			etFilterTasks.setEnabled(true);
@@ -111,18 +108,6 @@ public class ToDoList extends Activity {
 		listDocs.add(doc2);
 		listDocs.add(doc3);
 	}
-
-
-
-
-
-	private void showDocument(ToDoDocument toDoDocument) {
-		Intent intentToDoDetails = new Intent(this, ToDoDetail.class);
-		intentToDoDetails.putExtra(TO_DO_DOCUMENTS, toDoDocument);
-		startActivityForResult(intentToDoDetails, TO_DO_DETAILS_REQUEST);
-	}
-
-
 
 	private class ListViewClickListener implements android.widget.AdapterView.OnItemClickListener {
 		@Override

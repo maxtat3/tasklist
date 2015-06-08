@@ -1,6 +1,7 @@
 package edu.sintez.tasklist.model;
 
 import android.app.Application;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +11,16 @@ import java.util.List;
  */
 public class AppContext extends Application{
 
-	public static final String KEY_TYPE_ACTION = "keyaction";
-	public static final String KEY_DOCINDEX = "keyindex";
+	public static final String LOG = AppContext.class.getName();
+
+	public static final String KEY_TYPE_ACTION = LOG + ".typeaction";
+	public static final String KEY_DOCINDEX = LOG + ".docindex";
 	public static final int VAL_ACTION_NEWTASK = 0;
 	public static final int VAL_ACTION_UPDATE = 1;
 
+	/**
+	 * Хранилище всех документов
+	 */
 	private List<ToDoDocument> listDocs = new ArrayList<ToDoDocument>();
 
 	public List<ToDoDocument> getListDocs() {
