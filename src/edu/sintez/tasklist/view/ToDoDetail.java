@@ -10,7 +10,10 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 import edu.sintez.tasklist.R;
+import edu.sintez.tasklist.model.AppContext;
 import edu.sintez.tasklist.model.ToDoDocument;
+
+import java.util.List;
 
 
 /**
@@ -28,6 +31,11 @@ public class ToDoDetail extends Activity {
 	public static final String CANCEL = "Отмена";
 	public static final String NO = "Нет";
 
+	private List<ToDoDocument> listDocs;
+
+	private int typeAction;
+	private int docIndex;
+
 	private EditText etContent;
 
 	private ToDoDocument doc;
@@ -40,9 +48,14 @@ public class ToDoDetail extends Activity {
 
 		etContent = (EditText) findViewById(R.id.et);
 
-		doc = (ToDoDocument) getIntent().getSerializableExtra(ToDoList.TO_DO_DOCUMENTS);
-		setTitle(doc.getName());
-		etContent.setText(doc.getContent());
+		listDocs = ((AppContext) getApplicationContext()).getListDocs();
+		for (ToDoDocument listDoc : listDocs) {
+			Log.d(LOG, "doc name = " + listDoc.getName());
+		}
+
+//		doc = (ToDoDocument) getIntent().getSerializableExtra(ToDoList.TO_DO_DOCUMENTS);
+//		setTitle(doc.getName());
+//		etContent.setText(doc.getContent());
 	}
 
 	@Override

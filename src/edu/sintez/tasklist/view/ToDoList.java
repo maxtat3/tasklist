@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import edu.sintez.tasklist.R;
+import edu.sintez.tasklist.model.AppContext;
 import edu.sintez.tasklist.model.ToDoDocument;
 import java.util.*;
 
@@ -24,6 +25,7 @@ import java.util.*;
 public class ToDoList extends Activity {
 
 	private static final String LOG = ToDoList.class.getName();
+
 	public static final int TO_DO_DETAILS_REQUEST = 1000;
 	public static final String TO_DO_DOCUMENTS = "edu.sintez.model.ToDoDocument";
 	public static final String DEFAULT_NAME = "New task";
@@ -34,6 +36,8 @@ public class ToDoList extends Activity {
 	private List<ToDoDocument> listDocs;
 	private ArrayAdapter<ToDoDocument> arrayAdapter;
 
+	private Intent intentDetail;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,13 +45,16 @@ public class ToDoList extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_todo_list);
 
+		listDocs = ((AppContext) getApplicationContext()).getListDocs();
+
 		etFilterTasks = (EditText) findViewById(R.id.et_filter_task);
 		etFilterTasks.addTextChangedListener(new FilterTaskChangeListener());
 
 		lvTasks = (ListView) findViewById(R.id.lw_tasks);
 		lvTasks.setOnItemClickListener(new ListViewClickListener());
 
-		listDocs = new ArrayList<ToDoDocument>();
+
+		intentDetail = new Intent(this, ToDoDetail.class);
 
 		fillListTasks();
 	}
@@ -72,34 +79,40 @@ public class ToDoList extends Activity {
 		switch (item.getItemId()){
 			case R.id.item1_add_task:{
 				Log.d(LOG, "add task");
-				ToDoDocument doc = new ToDoDocument();
-				doc.setName(DEFAULT_NAME);
-				showDocument(doc);
+//				ToDoDocument doc = new ToDoDocument();
+//				doc.setName(DEFAULT_NAME);
+//				showDocument(doc);
+
+				Bundle bundle = new Bundle();
+				bundle.putInt(AppContext.KEY_TYPE_ACTION, AppContext.VAL_ACTION_NEWTASK);
+				intentDetail.putExtras(bundle);
+				startActivity(intentDetail);
+
 				return true;
 			}
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == TO_DO_DETAILS_REQUEST)
-			switch (resultCode){
-				case RESULT_CANCELED:
-					Log.d(LOG, "back");
-					break;
-
-				case ToDoDetail.RESULT_SAVE:
-					Log.d(LOG, "save");
-					ToDoDocument receiveDoc = (ToDoDocument) data.getSerializableExtra(TO_DO_DOCUMENTS);
-					addDocument(receiveDoc);
-					break;
-
-				case ToDoDetail.RESULT_DELETE:
-					ToDoDocument doc = (ToDoDocument) data.getSerializableExtra(TO_DO_DOCUMENTS);
-					deleteDocument(doc);
-			}
-	}
+//	@Override
+//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		if (requestCode == TO_DO_DETAILS_REQUEST)
+//			switch (resultCode){
+//				case RESULT_CANCELED:
+//					Log.d(LOG, "back");
+//					break;
+//
+//				case ToDoDetail.RESULT_SAVE:
+//					Log.d(LOG, "save");
+//					ToDoDocument receiveDoc = (ToDoDocument) data.getSerializableExtra(TO_DO_DOCUMENTS);
+//					addDocument(receiveDoc);
+//					break;
+//
+//				case ToDoDetail.RESULT_DELETE:
+//					ToDoDocument doc = (ToDoDocument) data.getSerializableExtra(TO_DO_DOCUMENTS);
+//					deleteDocument(doc);
+//			}
+//	}
 
 	private void checkFilterEnable() {
 		if (listDocs.size() != 0) {
@@ -123,25 +136,25 @@ public class ToDoList extends Activity {
 		listDocs.add(doc3);
 	}
 
-	private void addDocument(ToDoDocument doc) {
-		doc.setCreateDate(new Date());
-
-		if (doc.getNumber() == ToDoDocument.DOC_DO_NOT_EXIST) { /*это новый документ - сохраняем его*/
-			Log.d(LOG, "new doc");
-			listDocs.add(doc);
-		} else {
-			Log.d(LOG, "exist doc");
-			listDocs.set(doc.getNumber(), doc); /*такой локумент уже есть - редактируем и сохраняем*/
-		}
-		Collections.sort(listDocs);
-		arrayAdapter.notifyDataSetChanged();
-		updateIndices();
-
-		for (ToDoDocument listDoc : listDocs) {
-			Log.d(LOG, "doc num = " + String.valueOf(listDoc.getNumber()));
-		}
-		Log.d(LOG, "---");
-	}
+//	private void addDocument(ToDoDocument doc) {
+//		doc.setCreateDate(new Date());
+//
+//		if (doc.getNumber() == ToDoDocument.DOC_DO_NOT_EXIST) { /*это новый документ - сохраняем его*/
+//			Log.d(LOG, "new doc");
+//			listDocs.add(doc);
+//		} else {
+//			Log.d(LOG, "exist doc");
+//			listDocs.set(doc.getNumber(), doc); /*такой локумент уже есть - редактируем и сохраняем*/
+//		}
+//		Collections.sort(listDocs);
+//		arrayAdapter.notifyDataSetChanged();
+//		updateIndices();
+//
+//		for (ToDoDocument listDoc : listDocs) {
+//			Log.d(LOG, "doc num = " + String.valueOf(listDoc.getNumber()));
+//		}
+//		Log.d(LOG, "---");
+//	}
 
 	private void updateIndices(){
 		ToDoDocument doc;
