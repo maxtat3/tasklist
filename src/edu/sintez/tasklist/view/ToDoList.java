@@ -37,6 +37,7 @@ public class ToDoList extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		Log.d(LOG, "@onCreate");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_todo_list);
 
@@ -47,10 +48,17 @@ public class ToDoList extends Activity {
 		lvTasks.setOnItemClickListener(new ListViewClickListener());
 
 		listDocs = new ArrayList<ToDoDocument>();
-		arrayAdapter = new ArrayAdapter<ToDoDocument>(this, R.layout.pattern_lw_row, listDocs);
-		lvTasks.setAdapter(arrayAdapter);
 
 		fillListTasks();
+	}
+
+	@Override
+	protected void onStart() {
+		Log.d(LOG, "@onStart");
+		super.onStart();
+		arrayAdapter = new ArrayAdapter<ToDoDocument>(this, R.layout.pattern_lw_row, listDocs);
+		lvTasks.setAdapter(arrayAdapter);
+		arrayAdapter.getFilter().filter(etFilterTasks.getText().toString());
 	}
 
 	@Override
@@ -108,19 +116,30 @@ public class ToDoList extends Activity {
 
 	private void addDocument(ToDoDocument doc) {
 		doc.setCreateDate(new Date());
+
 		if (doc.getNumber() == ToDoDocument.DOC_DO_NOT_EXIST) { /*это новый документ - сохраняем его*/
 			Log.d(LOG, "new doc");
 			listDocs.add(doc);
 		} else {
-			Log.d(LOG, "concurrency doc");
+			Log.d(LOG, "exist doc");
 			listDocs.set(doc.getNumber(), doc); /*такой локумент уже есть - редактируем и сохраняем*/
 		}
 		Collections.sort(listDocs);
 		arrayAdapter.notifyDataSetChanged();
+		updateIndices();
+
 		for (ToDoDocument listDoc : listDocs) {
 			Log.d(LOG, "doc num = " + String.valueOf(listDoc.getNumber()));
 		}
 		Log.d(LOG, "---");
+	}
+
+	private void updateIndices(){
+		ToDoDocument doc;
+		for (int i = 0; i < listDocs.size(); i++) {
+			doc = listDocs.get(i);
+			doc.setNumber(i);
+		}
 	}
 
 	private void showDocument(ToDoDocument toDoDocument) {
@@ -132,6 +151,7 @@ public class ToDoList extends Activity {
 	private void deleteDocument(ToDoDocument doc){
 		listDocs.remove(doc.getNumber());
 		arrayAdapter.notifyDataSetChanged();
+		updateIndices();
 	}
 
 	private class ListViewClickListener implements android.widget.AdapterView.OnItemClickListener {
@@ -141,7 +161,6 @@ public class ToDoList extends Activity {
 			doc.setNumber(position);
 			showDocument(doc);
 		}
-
 	}
 
 	private class FilterTaskChangeListener implements TextWatcher {
@@ -152,7 +171,7 @@ public class ToDoList extends Activity {
 
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+			arrayAdapter.getFilter().filter(s);
 		}
 
 		@Override
