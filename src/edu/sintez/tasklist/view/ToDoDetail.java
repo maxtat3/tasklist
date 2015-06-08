@@ -126,6 +126,12 @@ public class ToDoDetail extends Activity {
 		updateIndices();
 	}
 
+	private void deleteDocument(ToDoDocument doc){
+		listDocs.remove(doc.getNumber());
+		updateIndices();
+		finish();
+	}
+
 	/**
 	 * Обновление индексов списка документов.
 	 * Нужно для правильной работы алгоритма фильтрации документов.
@@ -177,7 +183,7 @@ public class ToDoDetail extends Activity {
 		adb.setPositiveButton(YES, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				setResult(RESULT_DELETE, getIntent());
+				deleteDocument(doc);
 				finish();
 			}
 		});
@@ -206,7 +212,6 @@ public class ToDoDetail extends Activity {
 		adb.setNegativeButton(NO, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				setResult(RESULT_CANCELED, getIntent());
 				finish();
 			}
 		});

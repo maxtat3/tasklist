@@ -122,10 +122,7 @@ public class ToDoList extends Activity {
 		startActivityForResult(intentToDoDetails, TO_DO_DETAILS_REQUEST);
 	}
 
-	private void deleteDocument(ToDoDocument doc){
-		listDocs.remove(doc.getNumber());
-		arrayAdapter.notifyDataSetChanged();
-	}
+
 
 	private class ListViewClickListener implements android.widget.AdapterView.OnItemClickListener {
 		@Override
