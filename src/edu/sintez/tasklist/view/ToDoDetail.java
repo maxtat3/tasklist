@@ -63,7 +63,6 @@ public class ToDoDetail extends Activity {
 					setResult(RESULT_CANCELED, getIntent());
 					finish();
 				}
-				Log.d(LOG, "finish");
 				return true;
 
 			case R.id.item3_save:

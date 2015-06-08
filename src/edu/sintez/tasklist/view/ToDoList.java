@@ -3,12 +3,15 @@ package edu.sintez.tasklist.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import edu.sintez.tasklist.R;
 import edu.sintez.tasklist.model.ToDoDocument;
@@ -26,6 +29,7 @@ public class ToDoList extends Activity {
 	public static final String DEFAULT_NAME = "New task";
 
 	private ListView lvTasks;
+	private EditText etFilterTasks;
 
 	private List<ToDoDocument> listDocs;
 	private ArrayAdapter<ToDoDocument> arrayAdapter;
@@ -35,6 +39,9 @@ public class ToDoList extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_todo_list);
+
+		etFilterTasks = (EditText) findViewById(R.id.et_filter_task);
+		etFilterTasks.addTextChangedListener(new FilterTaskChangeListener());
 
 		lvTasks = (ListView) findViewById(R.id.lw_tasks);
 		lvTasks.setOnItemClickListener(new ListViewClickListener());
@@ -110,6 +117,10 @@ public class ToDoList extends Activity {
 		}
 		Collections.sort(listDocs);
 		arrayAdapter.notifyDataSetChanged();
+		for (ToDoDocument listDoc : listDocs) {
+			Log.d(LOG, "doc num = " + String.valueOf(listDoc.getNumber()));
+		}
+		Log.d(LOG, "---");
 	}
 
 	private void showDocument(ToDoDocument toDoDocument) {
@@ -133,4 +144,20 @@ public class ToDoList extends Activity {
 
 	}
 
+	private class FilterTaskChangeListener implements TextWatcher {
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+		}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+		}
+
+		@Override
+		public void afterTextChanged(Editable s) {
+
+		}
+	}
 }
