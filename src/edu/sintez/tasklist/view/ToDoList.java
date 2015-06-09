@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import edu.sintez.tasklist.R;
 import edu.sintez.tasklist.model.AppContext;
+import edu.sintez.tasklist.model.ExpandAdapter;
 import edu.sintez.tasklist.model.ListComparator;
 import edu.sintez.tasklist.model.ToDoDocument;
 import java.util.*;
@@ -102,7 +103,7 @@ public class ToDoList extends Activity {
 		Collections.sort(listDocs, comparator);
 		updateIndices();
 
-		arrayAdapter = new ArrayAdapter<ToDoDocument>(this, R.layout.pattern_lw_row, listDocs);
+		arrayAdapter = new ExpandAdapter(this, R.layout.pattern_lw_row, listDocs);
 		lvTasks.setAdapter(arrayAdapter);
 		arrayAdapter.getFilter().filter(etFilterTasks.getText().toString());
 	}
