@@ -27,6 +27,7 @@ public class ToDoDetail extends Activity {
 	public static final int NAME_LEN = 30;
 	public static final String MSG_DEL_THIS_DOC = "Вы действительно хотите удалить эту заметку ?";
 	public static final String MSG_DOC_IS_CHANGE_CONFIRM_SAVE = "Заметка была изменена, сохранить ?";
+	public static final String MSG_DOC_NO_CHANGE = "В заметке не было изменений.";
 	public static final String YES = "Да";
 	public static final String CANCEL = "Отмена";
 	public static final String NO = "Нет";
@@ -108,10 +109,10 @@ public class ToDoDetail extends Activity {
 		switch (typeAction) {
 			case AppContext.VAL_ACTION_NEWTASK:
 				listDocs.add(doc);
-				break;
+				break; //TODO - разобраться, нужен ли тут break
 			case AppContext.VAL_ACTION_UPDATE:
 				if (!isChangeDoc()) {
-					Toast.makeText(this, "В заметке не было изменений.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, MSG_DOC_NO_CHANGE, Toast.LENGTH_SHORT).show();
 					finish();
 					return;
 				}
@@ -120,28 +121,26 @@ public class ToDoDetail extends Activity {
 		doc.setCreateDate(new Date());
 		doc.setContent(etContent.getText().toString());
 		doc.setName(getDocName());
-
-		Collections.sort(listDocs);
-		updateIndices();
 	}
 
 	private void deleteDocument(ToDoDocument doc){
-		listDocs.remove(doc.getNumber());
-		updateIndices();
-		finish();
-	}
-
-	/**
-	 * Обновление индексов списка документов.
-	 * Нужно для правильной работы алгоритма фильтрации документов.
-	 */
-	private void updateIndices(){
-		ToDoDocument doc;
-		for (int i = 0; i < listDocs.size(); i++) {
-			doc = listDocs.get(i);
-			doc.setNumber(i);
+		if (typeAction == AppContext.VAL_ACTION_UPDATE) {
+			listDocs.remove(doc.getNumber());
+			finish();
 		}
 	}
+
+//	/**
+//	 * Обновление индексов списка документов.
+//	 * Нужно для правильной работы алгоритма фильтрации документов.
+//	 */
+//	private void updateIndices(){
+//		ToDoDocument doc;
+//		for (int i = 0; i < listDocs.size(); i++) {
+//			doc = listDocs.get(i);
+//			doc.setNumber(i);
+//		}
+//	}
 
 	/**
 	 * Проверка, редактировался ли документ
@@ -175,6 +174,12 @@ public class ToDoDetail extends Activity {
 	}
 
 
+	/**
+	 * Вызов диалога подтверждения удаления заметки.
+	 * Если пользователь ответил "Да" - выполняется удаление открытой заметки
+	 * из списка и переход в главную активность. Если пользователь ответил "Отмена"
+	 * ничего не происходит. Детальная активность остается открытой.
+	 */
 	private void dialogConfirmDel(){
 		AlertDialog.Builder adb = new AlertDialog.Builder(this);
 		adb.setMessage(MSG_DEL_THIS_DOC);
@@ -197,6 +202,12 @@ public class ToDoDetail extends Activity {
 
 	}
 
+	/**
+	 * Вызов диалога подтверждения сохранения заметки.
+	 * Если пользователь ответил "Да" - выполняется созранени открытой заметки
+	 * и переход в главную активность. Если пользователь ответил "Нет" то
+	 * заметка не сохраняется, выполняется переход в главную активность.
+	 */
 	private void dialogConfirmSave(){
 		AlertDialog.Builder adb = new AlertDialog.Builder(this);
 		adb.setMessage(MSG_DOC_IS_CHANGE_CONFIRM_SAVE);

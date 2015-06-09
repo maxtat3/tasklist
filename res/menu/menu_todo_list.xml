@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<item android:id="@+id/item1_add_task" android:title="@string/add_task"/>
+	<item
+		android:title="sorting"
+		android:showAsAction="ifRoom|withText"
+		>
+		<menu xmlns:android="http://schemas.android.com/apk/res/android">
+			<group android:checkableBehavior="single">
+				<item
+					android:id="@+id/menu_sort_name"
+					android:title="по имени"
+					/>
+				<item
+					android:id="@+id/menu_sort_date"
+					android:title="по дате"
+					/>
+			</group>
+		</menu>
+	</item>
+
+	<item
+		android:id="@+id/item1_add_task"
+		android:title="@string/add_task"/>
 
 </menu>

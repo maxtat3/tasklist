@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Заметка
  */
-public class ToDoDocument implements Serializable, Comparable<ToDoDocument> {
+public class ToDoDocument implements Serializable {
 
 	private static final long serialVersionUID = -437658343920952013L;
 	public static final int DOC_DO_NOT_EXIST = -1;
@@ -100,20 +100,5 @@ public class ToDoDocument implements Serializable, Comparable<ToDoDocument> {
 	public String toString() {
 		return name;
 	}
-
-	@Override
-	public int compareTo(ToDoDocument anotherDoc) {
-		return anotherDoc.getCreateDate().compareTo(createDate);
-	}
-
-//	@Override
-//	public boolean equals(Object obj) {
-//		if (!(obj instanceof ToDoDocument)){
-//			return false;
-//		}
-//		ToDoDocument doc = (ToDoDocument) obj;
-//		return doc.getNumber() == this.number;
-//	}
-
 
 }
