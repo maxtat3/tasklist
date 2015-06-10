@@ -9,6 +9,7 @@ public class ListComparator {
 
 	private static ComparatorByName compByName;
 	private static ComparatorByDate compByDate;
+	private static ComparatorByPriority compByPriority;
 
 
 	public static Comparator<ToDoDocument> getCompByName() {
@@ -23,6 +24,13 @@ public class ListComparator {
 			compByDate = new ComparatorByDate();
 		}
 		return compByDate;
+	}
+
+	public static Comparator<ToDoDocument> getCompByPriority() {
+		if (compByPriority == null) {
+			compByPriority = new ComparatorByPriority();
+		}
+		return compByPriority;
 	}
 
 

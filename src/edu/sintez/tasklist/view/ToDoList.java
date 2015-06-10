@@ -89,6 +89,11 @@ public class ToDoList extends Activity {
 				comparator = ListComparator.getCompByDate();
 				sort();
 				return true;
+
+			case R.id.menu_sort_priority:
+				comparator = ListComparator.getCompByPriority();
+				sort();
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
