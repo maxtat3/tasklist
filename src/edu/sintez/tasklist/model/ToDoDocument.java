@@ -15,6 +15,7 @@ public class ToDoDocument implements Serializable {
 	private String name;
 	private String content;
 	private Date createDate;
+	private Priority priority = Priority.LOW;
 
 	/**
 	 * Внутренний номер заметк.
@@ -57,6 +58,22 @@ public class ToDoDocument implements Serializable {
 		this.number = number;
 	}
 
+	/**
+	 *
+	 * @param name имя
+	 * @param content содержимое
+	 * @param createDate дата создания
+	 * @param priority приоритет
+	 * @param number внктренний номер заметки
+	 */
+	public ToDoDocument(String name, String content, Date createDate, Priority priority, int number) {
+		this.name = name;
+		this.content = content;
+		this.createDate = createDate;
+		this.priority = priority;
+		this.number = number;
+	}
+
 
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
@@ -95,6 +112,13 @@ public class ToDoDocument implements Serializable {
 		this.number = number;
 	}
 
+	public Priority getPriority() {
+		return priority;
+	}
+
+	public void setPriority(Priority priority) {
+		this.priority = priority;
+	}
 
 	@Override
 	public String toString() {

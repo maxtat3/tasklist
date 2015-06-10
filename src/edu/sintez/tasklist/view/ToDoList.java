@@ -14,10 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import edu.sintez.tasklist.R;
-import edu.sintez.tasklist.model.AppContext;
-import edu.sintez.tasklist.model.ExpandAdapter;
-import edu.sintez.tasklist.model.ListComparator;
-import edu.sintez.tasklist.model.ToDoDocument;
+import edu.sintez.tasklist.model.*;
+
 import java.util.*;
 
 
@@ -136,9 +134,9 @@ public class ToDoList extends Activity {
 	 * Имитация заполнение тасков
 	 */
 	private void fillListTasks() {
-		ToDoDocument doc1 = new ToDoDocument("Name1", "Context1", new Date(), 0);
-		ToDoDocument doc2 = new ToDoDocument("Name2", "Context2", new Date(), 1);
-		ToDoDocument doc3 = new ToDoDocument("Name3", "Context3", new Date(), 2);
+		ToDoDocument doc1 = new ToDoDocument("Name1", "Context1", new Date(), Priority.HIGH, 0);
+		ToDoDocument doc2 = new ToDoDocument("Name2", "Context2", new Date(), Priority.LOW, 1);
+		ToDoDocument doc3 = new ToDoDocument("Name3", "Context3", new Date(), Priority.NORMAL, 2);
 
 		listDocs.add(doc1);
 		listDocs.add(doc2);

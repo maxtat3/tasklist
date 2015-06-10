@@ -34,12 +34,17 @@ public class ListComparator {
 	}
 
 	private static class ComparatorByDate implements Comparator<ToDoDocument>{
-
 		@Override
 		public int compare(ToDoDocument lhs, ToDoDocument rhs) {
 			return lhs.getCreateDate().compareTo(rhs.getCreateDate());
 		}
+	}
 
+	private static class ComparatorByPriority implements Comparator<ToDoDocument> {
+		@Override
+		public int compare(ToDoDocument lhs, ToDoDocument rhs) {
+			return lhs.getPriority().compareTo(rhs.getPriority());
+		}
 	}
 
 }

@@ -11,9 +11,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 import edu.sintez.tasklist.R;
 import edu.sintez.tasklist.model.AppContext;
+import edu.sintez.tasklist.model.Priority;
 import edu.sintez.tasklist.model.ToDoDocument;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +38,9 @@ public class ToDoDetail extends Activity {
 
 	private int typeAction;
 	private int keyDocIndex;
+
+	private MenuItem menuPr;
+	private Priority currPriority;
 
 	private EditText etContent;
 
@@ -70,12 +73,19 @@ public class ToDoDetail extends Activity {
 				etContent.setText(doc.getContent());
 				break;
 		}
+		currPriority = doc.getPriority();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_todo_details, menu);
-		return super.onCreateOptionsMenu(menu);
+
+		menuPr = menu.findItem(R.id.menu_priority);
+		MenuItem mi = menuPr.getSubMenu().getItem(doc.getPriority().getIndex());
+		mi.setChecked(true);
+
+//		return super.onCreateOptionsMenu(menu);
+		return true;
 	}
 
 	@Override
@@ -101,6 +111,15 @@ public class ToDoDetail extends Activity {
 				Log.d(LOG, "del");
 				dialogConfirmDel();
 				return true;
+
+			case R.id.menu_pr_low:
+			case R.id.menu_pr_medium:
+			case R.id.menu_pr_high: {
+				item.setChecked(true);
+				Priority[] values = Priority.values();
+				currPriority = values[Integer.parseInt(item.getTitleCondensed().toString())];
+				return true;
+			}
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -120,6 +139,7 @@ public class ToDoDetail extends Activity {
 
 		doc.setCreateDate(new Date());
 		doc.setContent(etContent.getText().toString());
+		doc.setPriority(currPriority);
 		doc.setName(getDocName());
 	}
 
@@ -143,11 +163,12 @@ public class ToDoDetail extends Activity {
 //	}
 
 	/**
-	 * Проверка, редактировался ли документ
+	 * Проверка, редактировался ли документ. Проверятеся содержимое и приоритет
 	 * @return true - да (изменения выполнялись) ; false - нет
 	 */
 	private boolean isChangeDoc() {
-		if (etContent.getText().toString().equals(doc.getContent())) {
+		if (etContent.getText().toString().equals(doc.getContent()) &&
+				currPriority == doc.getPriority()) {
 			return false;
 		} else {
 			return true;

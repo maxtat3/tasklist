@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import edu.sintez.tasklist.R;
 
@@ -31,6 +32,7 @@ public class ExpandAdapter extends ArrayAdapter<ToDoDocument> {
 			ViewHolder viewHolder = new ViewHolder();
 			viewHolder.name = (TextView) convertView.findViewById(R.id.tv_task_name);
 			viewHolder.date = (TextView) convertView.findViewById(R.id.tv_task_date);
+			viewHolder.imgPriority = (ImageView) convertView.findViewById(R.id.image_priority_task);
 
 			convertView.setTag(viewHolder);
 		}
@@ -39,6 +41,17 @@ public class ExpandAdapter extends ArrayAdapter<ToDoDocument> {
 		ToDoDocument doc = getItem(position);
 		viewHolder.name.setText(doc.getName());
 		viewHolder.date.setText(DateFormat.format("dd MMMM, yyyy,  hh:mm", doc.getCreateDate()));
+		switch (doc.getPriority()) {
+			case LOW:
+				viewHolder.imgPriority.setImageResource(R.mipmap.ic_priority_low);
+				break;
+			case NORMAL:
+				viewHolder.imgPriority.setImageResource(R.mipmap.ic_priority_normal);
+				break;
+			case HIGH:
+				viewHolder.imgPriority.setImageResource(R.mipmap.ic_priority_high);
+				break;
+		}
 
 		return convertView;
 	}
@@ -46,5 +59,6 @@ public class ExpandAdapter extends ArrayAdapter<ToDoDocument> {
 	public static class ViewHolder{
 		public TextView name;
 		public TextView date;
+		public ImageView imgPriority;
 	}
 }
