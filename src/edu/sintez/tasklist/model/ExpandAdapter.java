@@ -2,6 +2,7 @@ package edu.sintez.tasklist.model;
 
 import android.content.Context;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,9 @@ import java.util.List;
 
 public class ExpandAdapter extends ArrayAdapter<ToDoDocument> {
 
+	private static final String LOG = ExpandAdapter.class.getName();
+
+
 	public ExpandAdapter(Context context, int textViewResourceId, List<ToDoDocument> listDocs) {
 		super(context, textViewResourceId, listDocs);
 	}
@@ -22,6 +26,7 @@ public class ExpandAdapter extends ArrayAdapter<ToDoDocument> {
 	public ExpandAdapter(Context context, int textViewResourceId, ToDoDocument[] objects) {
 		super(context, textViewResourceId, objects);
 	}
+
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {

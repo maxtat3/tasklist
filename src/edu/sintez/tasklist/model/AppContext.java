@@ -13,8 +13,8 @@ public class AppContext extends Application{
 
 	public static final String LOG = AppContext.class.getName();
 
-	public static final String KEY_TYPE_ACTION = LOG + ".typeaction";
-	public static final String KEY_DOCINDEX = LOG + ".docindex";
+	public static final String KEY_TYPE_ACTION = LOG + ".typeactionkey";
+	public static final String KEY_DOC_INDEX = LOG + ".docindexkey";
 	public static final int VAL_ACTION_NEWTASK = 0;
 	public static final int VAL_ACTION_UPDATE = 1;
 

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -159,7 +158,7 @@ public class ToDoList extends Activity {
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			Bundle bundle = new Bundle();
 			bundle.putInt(AppContext.KEY_TYPE_ACTION, AppContext.VAL_ACTION_UPDATE);
-			bundle.putInt(AppContext.KEY_DOCINDEX, ((ToDoDocument)parent.getAdapter().getItem(position)).getNumber());
+			bundle.putInt(AppContext.KEY_DOC_INDEX, ((ToDoDocument)parent.getAdapter().getItem(position)).getNumber());
 			startActivity(intentDetail.putExtras(bundle));
 		}
 	}

@@ -37,7 +37,7 @@ public class ToDoDetail extends Activity {
 	private List<ToDoDocument> listDocs;
 
 	private int typeAction;
-	private int keyDocIndex;
+	private int valDocIndex;
 
 	private MenuItem menuPr;
 	private Priority currPriority;
@@ -68,8 +68,8 @@ public class ToDoDetail extends Activity {
 				doc = new ToDoDocument();
 				break;
 			case AppContext.VAL_ACTION_UPDATE:
-				keyDocIndex = getIntent().getExtras().getInt(AppContext.KEY_DOCINDEX);
-				doc = listDocs.get(keyDocIndex);
+				valDocIndex = getIntent().getExtras().getInt(AppContext.KEY_DOC_INDEX);
+				doc = listDocs.get(valDocIndex);
 				etContent.setText(doc.getContent());
 				break;
 		}
