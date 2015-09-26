@@ -138,17 +138,10 @@ public class ToDoList extends Activity {
 	}
 
 	/**
-	 * Имитация заполнение тасков
+	 * Восстановление заметок из ФС при старте приложения.
+	 * Заметки храняться как xml файлы во внутреннем хранилище приложения.
 	 */
 	private void fillListTasks() {
-		ToDoDocument doc1 = new ToDoDocument("Name1", "Context1", new Date(), Priority.HIGH, 0);
-		ToDoDocument doc2 = new ToDoDocument("Name2", "Context2", new Date(), Priority.LOW, 1);
-		ToDoDocument doc3 = new ToDoDocument("Name3", "Context3", new Date(), Priority.NORMAL, 2);
-
-		listDocs.add(doc1);
-		listDocs.add(doc2);
-		listDocs.add(doc3);
-
 		File sharedPrefsDir = new File(getApplicationInfo().dataDir, SHARED_PREFS_DIR);
 		if (sharedPrefsDir.exists() && sharedPrefsDir.isDirectory()) {
 			String[] list = sharedPrefsDir.list();
