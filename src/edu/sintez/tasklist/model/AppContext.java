@@ -18,6 +18,11 @@ public class AppContext extends Application{
 	public static final int VAL_ACTION_NEWTASK = 0;
 	public static final int VAL_ACTION_UPDATE = 1;
 
+	public static final String KEY_NAME = "name";
+	public static final String KEY_CONTENT = "content";
+	public static final String KEY_DATE = "date";
+	public static final String KEY_PRIORITY = "priority";
+
 	/**
 	 * Хранилище всех документов
 	 */

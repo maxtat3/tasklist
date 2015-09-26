@@ -3,6 +3,7 @@ package edu.sintez.tasklist.view;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -128,7 +129,7 @@ public class ToDoDetail extends Activity {
 		switch (typeAction) {
 			case AppContext.VAL_ACTION_NEWTASK:
 				listDocs.add(doc);
-				break; //TODO - разобраться, нужен ли тут break
+				break;
 			case AppContext.VAL_ACTION_UPDATE:
 				if (!isChangeDoc()) {
 					Toast.makeText(this, MSG_DOC_NO_CHANGE, Toast.LENGTH_SHORT).show();
@@ -141,6 +142,14 @@ public class ToDoDetail extends Activity {
 		doc.setContent(etContent.getText().toString());
 		doc.setPriority(currPriority);
 		doc.setName(getDocName());
+
+		SharedPreferences shp = getSharedPreferences(String.valueOf(doc.getCreateDate().getTime()), MODE_PRIVATE);
+		SharedPreferences.Editor editor = shp.edit();
+		editor.putString(AppContext.KEY_NAME, doc.getName());
+		editor.putString(AppContext.KEY_CONTENT, doc.getContent());
+		editor.putLong(AppContext.KEY_DATE, doc.getCreateDate().getTime());
+		editor.putInt(AppContext.KEY_PRIORITY, doc.getPriority().getIndex());
+		editor.commit();
 	}
 
 	private void deleteDocument(ToDoDocument doc){
