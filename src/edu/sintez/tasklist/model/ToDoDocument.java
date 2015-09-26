@@ -35,19 +35,6 @@ public class ToDoDocument implements Serializable {
 	 * @param name имя
 	 * @param content создержимое
 	 * @param createDate дата создания
-	 */
-	public ToDoDocument(String name, String content, Date createDate) {
-		super();
-		this.name = name;
-		this.content = content;
-		this.createDate = createDate;
-	}
-
-	/**
-	 * Заметка
-	 * @param name имя
-	 * @param content создержимое
-	 * @param createDate дата создания
 	 * @param number внутренний номер заметки
 	 */
 	public ToDoDocument(String name, String content, Date createDate, int number) {
@@ -59,7 +46,22 @@ public class ToDoDocument implements Serializable {
 	}
 
 	/**
-	 *
+	 * Заметка
+	 * @param name имя
+	 * @param content создержимое
+	 * @param createDate дата создания
+	 * @param priority приоритет
+	 */
+	public ToDoDocument(String name, String content, Date createDate, Priority priority) {
+		super();
+		this.name = name;
+		this.content = content;
+		this.createDate = createDate;
+		this.priority = priority;
+	}
+
+	/**
+	 * Заметка
 	 * @param name имя
 	 * @param content содержимое
 	 * @param createDate дата создания

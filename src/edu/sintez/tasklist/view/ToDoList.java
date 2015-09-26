@@ -2,6 +2,7 @@ package edu.sintez.tasklist.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +16,7 @@ import android.widget.ListView;
 import edu.sintez.tasklist.R;
 import edu.sintez.tasklist.model.*;
 
+import java.io.File;
 import java.util.*;
 
 
@@ -24,6 +26,7 @@ import java.util.*;
 public class ToDoList extends Activity {
 
 	private static final String LOG = ToDoList.class.getName();
+	public static final String SHARED_PREFS_DIR = "shared_prefs";
 
 	/* по умолчанию, выполнять сортировку по дате */
 	private static Comparator<ToDoDocument> comparator = ListComparator.getCompByDate();
@@ -145,6 +148,21 @@ public class ToDoList extends Activity {
 		listDocs.add(doc1);
 		listDocs.add(doc2);
 		listDocs.add(doc3);
+
+		File sharedPrefsDir = new File(getApplicationInfo().dataDir, SHARED_PREFS_DIR);
+		if (sharedPrefsDir.exists() && sharedPrefsDir.isDirectory()) {
+			String[] list = sharedPrefsDir.list();
+			for (int i = 0; i < list.length; i++) {
+				SharedPreferences shp = getSharedPreferences(list[i].replace(".xml", ""), MODE_PRIVATE);
+				String name = shp.getString(AppContext.KEY_NAME, null);
+				String content = shp.getString(AppContext.KEY_CONTENT, null);
+				long dateMs = shp.getLong(AppContext.KEY_DATE, 0);
+				int priority = shp.getInt(AppContext.KEY_PRIORITY, 0);
+
+				ToDoDocument doc = new ToDoDocument(name, content, new Date(dateMs), Priority.values()[priority]);
+				listDocs.add(doc);
+			}
+		}
 	}
 
 	/**
