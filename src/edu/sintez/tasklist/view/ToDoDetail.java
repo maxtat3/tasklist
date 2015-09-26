@@ -127,53 +127,51 @@ public class ToDoDetail extends Activity {
 	}
 
 	private void saveDocument() {
-		SharedPreferences shp = getSharedPreferences(String.valueOf(doc.getCreateDate().getTime()), MODE_PRIVATE);
-		SharedPreferences.Editor editor = shp.edit();
-
 		switch (typeAction) {
 			case AppContext.VAL_ACTION_NEWTASK:
-				doc.setCreateDate(new Date());
-				doc.setContent(etContent.getText().toString());
-				doc.setName(getDocName());
-				doc.setPriority(currPriority);
-
-				editor.putString(AppContext.KEY_NAME, doc.getName());
-				editor.putString(AppContext.KEY_CONTENT, doc.getContent());
-				editor.putLong(AppContext.KEY_DATE, doc.getCreateDate().getTime());
-				editor.putInt(AppContext.KEY_PRIORITY, doc.getPriority().getIndex());
-				editor.commit();
-
+				prepareToSave();
 				listDocs.add(doc);
 				break;
 
 			case AppContext.VAL_ACTION_UPDATE:
 				if (isChangeDoc()) {
 					String shpDirPath = getApplicationInfo().dataDir + "/" + ToDoList.SHARED_PREFS_DIR;
-					File file = new File(shpDirPath, doc.getCreateDate() + ".xml");
-
-					doc.setCreateDate(new Date());
-					doc.setContent(etContent.getText().toString());
-					doc.setName(getDocName());
-					doc.setPriority(currPriority);
-
-					editor.putString(AppContext.KEY_CONTENT, doc.getContent());
-					editor.putString(AppContext.KEY_NAME, doc.getName());
-					editor.putLong(AppContext.KEY_DATE, doc.getCreateDate().getTime());
-					editor.putInt(AppContext.KEY_PRIORITY, doc.getPriority().getIndex());
-					editor.commit();
-
+					File file = new File(shpDirPath, doc.getCreateDate().getTime() + ".xml");
+					prepareToSave();
 					file.renameTo(new File(shpDirPath, doc.getCreateDate().getTime() + ".xml"));
 				} else {
 					Toast.makeText(this, MSG_DOC_NO_CHANGE, Toast.LENGTH_SHORT).show();
 					finish();
 				}
 		}
+	}
 
+	private void prepareToSave(){
+		doc.setCreateDate(new Date());
+		doc.setContent(etContent.getText().toString());
+		doc.setName(getDocName());
+		doc.setPriority(currPriority);
+
+		SharedPreferences shp = getSharedPreferences(String.valueOf(doc.getCreateDate().getTime()), MODE_PRIVATE);
+		SharedPreferences.Editor editor = shp.edit();
+
+		editor.putLong(AppContext.KEY_DATE, doc.getCreateDate().getTime());
+		editor.putString(AppContext.KEY_CONTENT, doc.getContent());
+		editor.putString(AppContext.KEY_NAME, doc.getName());
+		editor.putInt(AppContext.KEY_PRIORITY, doc.getPriority().getIndex());
+
+		editor.apply(); // асинхронное сохранение
 	}
 
 	private void deleteDocument(ToDoDocument doc){
 		if (typeAction == AppContext.VAL_ACTION_UPDATE) {
-			listDocs.remove(doc.getNumber());
+			String shpDirPath = getApplicationInfo().dataDir + "/" + ToDoList.SHARED_PREFS_DIR;
+			File file = new File(shpDirPath, doc.getCreateDate().getTime() + ".xml");
+			if (file.delete()) {
+				listDocs.remove(doc.getNumber());
+			} else {
+				Toast.makeText(getApplicationContext(), "Не удаеться удалить эту заметку.", Toast.LENGTH_SHORT).show();
+			}
 			finish();
 		}
 	}
