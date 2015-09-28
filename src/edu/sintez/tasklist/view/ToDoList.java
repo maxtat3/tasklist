@@ -34,7 +34,14 @@ public class ToDoList extends Activity {
 	private ListView lvTasks;
 	private EditText etFilterTasks;
 
+	/**
+	 * Список всех заметок
+	 */
 	private List<ToDoDocument> listDocs;
+
+	/**
+	 * Адаптер для заполнеия
+	 */
 	private ArrayAdapter<ToDoDocument> arrayAdapter;
 
 	private Intent intentDetail;

@@ -77,11 +77,6 @@ public class ToDoDocument implements Serializable {
 	}
 
 
-	public static long getSerialVersionUID() {
-		return serialVersionUID;
-	}
-
-
 	public String getName() {
 		return name;
 	}

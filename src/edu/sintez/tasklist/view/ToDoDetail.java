@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -21,29 +20,61 @@ import java.util.List;
 
 
 /**
- * Создержание конкретной заметки
+ * Содержание конкретной заметки.
+ * Эта активность вызываеться из активности {@link ToDoList} при нажатии на конкретныю заметку.
+ * Получаемые параметры из {@link ToDoList}:
+ *  - список всех заметок {@link ToDoList#listDocs} , {@link ToDoDetail#listDocs}
+ *  - индекс (позиция) выбранной заметки из всего списка
+ *  - действие: новя заметка или редактирование существующей
  */
 public class ToDoDetail extends Activity {
 
 	public static final String LOG = ToDoDetail.class.getName();
 	public static final int NAME_LEN = 30;
+	public static final String EXT_XML = ".xml";
 	public static final String MSG_DEL_THIS_DOC = "Вы действительно хотите удалить эту заметку ?";
 	public static final String MSG_DOC_IS_CHANGE_CONFIRM_SAVE = "Заметка была изменена, сохранить ?";
 	public static final String MSG_DOC_NO_CHANGE = "В заметке не было изменений.";
 	public static final String YES = "Да";
 	public static final String CANCEL = "Отмена";
 	public static final String NO = "Нет";
-	public static final String DEFAULT_NAME = "New task";
+	public static final String DEFAULT_DOC_NAME = "New task";
 
+	/**
+	 * Текущая заметка с которой мы работаем.
+	 */
 	private ToDoDocument doc;
+
+	/**
+	 * Список всех заметок
+	 */
 	private List<ToDoDocument> listDocs;
 
+	/**
+	 * Возможные действия над заметкой:
+	 * - новая заметка {@link AppContext#VAL_ACTION_NEWTASK}
+	 * - обновление существующей {@link AppContext#VAL_ACTION_UPDATE}
+	 */
 	private int typeAction;
+
+	/**
+	 * Индекс (позиция) выбранной заметки
+	 */
 	private int valDocIndex;
 
+	/**
+	 * Меню выбора приоритетов для заметки
+	 */
 	private MenuItem menuPr;
+
+	/**
+	 * Выбранный приоритет заметки {@link Priority}
+	 */
 	private Priority currPriority;
 
+	/**
+	 * Содержит текст заметки
+	 */
 	private EditText etContent;
 
 
@@ -54,16 +85,15 @@ public class ToDoDetail extends Activity {
 
 		etContent = (EditText) findViewById(R.id.et);
 
-		listDocs = ((AppContext) getApplicationContext()).getListDocs();
-		for (ToDoDocument listDoc : listDocs) {
-			Log.d(LOG, "doc name = " + listDoc.getName());
-		}
-
 		typeAction = getIntent().getExtras().getInt(AppContext.KEY_TYPE_ACTION);
 
 		selDocAction(typeAction);
 	}
 
+	/**
+	 * Определение действия производимого над заметкой
+	 * @param action действие
+	 */
 	private void selDocAction(int action) {
 		switch (action) {
 			case AppContext.VAL_ACTION_NEWTASK:
@@ -86,7 +116,6 @@ public class ToDoDetail extends Activity {
 		MenuItem mi = menuPr.getSubMenu().getItem(doc.getPriority().getIndex());
 		mi.setChecked(true);
 
-//		return super.onCreateOptionsMenu(menu);
 		return true;
 	}
 
@@ -94,8 +123,6 @@ public class ToDoDetail extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()){
 			case R.id.item2_back:
-				Log.d(LOG, "back");
-				Log.d(LOG, "is change ? " + isChangeDoc());
 				if (isChangeDoc()) {
 					dialogConfirmSave();
 				} else {
@@ -104,13 +131,11 @@ public class ToDoDetail extends Activity {
 				return true;
 
 			case R.id.item3_save:
-				Log.d(LOG, "save");
 				saveDocument();
 				finish();
 				return true;
 
 			case R.id.item4_del:
-				Log.d(LOG, "del");
 				dialogConfirmDel();
 				return true;
 
@@ -126,6 +151,9 @@ public class ToDoDetail extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Сохранение документа на ФС и изменение в общем списке
+	 */
 	private void saveDocument() {
 		switch (typeAction) {
 			case AppContext.VAL_ACTION_NEWTASK:
@@ -136,9 +164,9 @@ public class ToDoDetail extends Activity {
 			case AppContext.VAL_ACTION_UPDATE:
 				if (isChangeDoc()) {
 					String shpDirPath = getApplicationInfo().dataDir + "/" + ToDoList.SHARED_PREFS_DIR;
-					File file = new File(shpDirPath, doc.getCreateDate().getTime() + ".xml");
+					File file = new File(shpDirPath, doc.getCreateDate().getTime() + EXT_XML);
 					prepareToSave();
-					file.renameTo(new File(shpDirPath, doc.getCreateDate().getTime() + ".xml"));
+					file.renameTo(new File(shpDirPath, doc.getCreateDate().getTime() + EXT_XML));
 				} else {
 					Toast.makeText(this, MSG_DOC_NO_CHANGE, Toast.LENGTH_SHORT).show();
 					finish();
@@ -146,6 +174,9 @@ public class ToDoDetail extends Activity {
 		}
 	}
 
+	/**
+	 * Заполнение документа и подготовка и сохранение на ФС применяя shared preferences
+	 */
 	private void prepareToSave(){
 		doc.setCreateDate(new Date());
 		doc.setContent(etContent.getText().toString());
@@ -166,7 +197,7 @@ public class ToDoDetail extends Activity {
 	private void deleteDocument(ToDoDocument doc){
 		if (typeAction == AppContext.VAL_ACTION_UPDATE) {
 			String shpDirPath = getApplicationInfo().dataDir + "/" + ToDoList.SHARED_PREFS_DIR;
-			File file = new File(shpDirPath, doc.getCreateDate().getTime() + ".xml");
+			File file = new File(shpDirPath, doc.getCreateDate().getTime() + EXT_XML);
 			if (file.delete()) {
 				listDocs.remove(doc.getNumber());
 			} else {
@@ -175,18 +206,6 @@ public class ToDoDetail extends Activity {
 			finish();
 		}
 	}
-
-//	/**
-//	 * Обновление индексов списка документов.
-//	 * Нужно для правильной работы алгоритма фильтрации документов.
-//	 */
-//	private void updateIndices(){
-//		ToDoDocument doc;
-//		for (int i = 0; i < listDocs.size(); i++) {
-//			doc = listDocs.get(i);
-//			doc.setNumber(i);
-//		}
-//	}
 
 	/**
 	 * Проверка, редактировался ли документ. Проверятеся содержимое и приоритет
@@ -205,12 +224,12 @@ public class ToDoDetail extends Activity {
 	 * Получение имени документа. Имя берется из содержимого документа.
 	 * Если содержимое документа более NAME_LEN символов
 	 * тогда оно сокращается до NAME_LEN символов. Остальные символы заменяются троеточием.
-	 * Если в содержимом нет ни одного символа, тогда в качестве имени возвращается DEFAULT_NAME.
+	 * Если в содержимом нет ни одного символа, тогда в качестве имени возвращается {@link #DEFAULT_DOC_NAME}
 	 * @return имя документа
 	 */
 	private String getDocName(){
 		if (etContent.getText().toString().equals("")){
-			return DEFAULT_NAME;
+			return DEFAULT_DOC_NAME;
 		}
 		StringBuilder sb = new StringBuilder(etContent.getText());
 		if (sb.length() > NAME_LEN){

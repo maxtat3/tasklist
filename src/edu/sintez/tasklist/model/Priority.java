@@ -1,7 +1,7 @@
 package edu.sintez.tasklist.model;
 
 /**
- * Created by max on 10.06.15.
+ * Возможные варианты приоритетов для заметки
  */
 public enum Priority {
 

@@ -6,11 +6,15 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * Created by max on 08.06.15.
+ * Контекст приложения
  */
 public class AppContext extends Application{
 
+	/**
+	 * Константы
+	 */
 	public static final String LOG = AppContext.class.getName();
 
 	public static final String KEY_TYPE_ACTION = LOG + ".typeactionkey";

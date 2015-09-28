@@ -3,7 +3,7 @@ package edu.sintez.tasklist.model;
 import java.util.Comparator;
 
 /**
- * Created by max on 09.06.15.
+ * Сортировка заметок по: имени, дате, приоритету
  */
 public class ListComparator {
 
