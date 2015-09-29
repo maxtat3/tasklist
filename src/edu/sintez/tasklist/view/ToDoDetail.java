@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -86,6 +87,8 @@ public class ToDoDetail extends Activity {
 		etContent = (EditText) findViewById(R.id.et);
 
 		typeAction = getIntent().getExtras().getInt(AppContext.KEY_TYPE_ACTION);
+
+		listDocs = ((AppContext) getApplicationContext()).getListDocs();
 
 		selDocAction(typeAction);
 	}

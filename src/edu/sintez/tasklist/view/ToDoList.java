@@ -1,18 +1,17 @@
 package edu.sintez.tasklist.view;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.*;
+import edu.sintez.tasklist.DeleteDocReceiver;
 import edu.sintez.tasklist.R;
 import edu.sintez.tasklist.model.*;
 
@@ -40,11 +39,29 @@ public class ToDoList extends Activity {
 	private List<ToDoDocument> listDocs;
 
 	/**
-	 * Адаптер для заполнеия
+	 * Адаптер для заполнеия заметок в главной активности
 	 */
 	private ArrayAdapter<ToDoDocument> arrayAdapter;
 
+	/**
+	 * Интент для перехода в активность детального отображения заметки
+	 */
 	private Intent intentDetail;
+
+	/**
+	 * Слушатель для checkbox в каждом элементе списка (в каждой заметке)
+	 */
+	private DocumentSelectedListener docSelListener = new DocumentSelectedListener();
+
+	/**
+	 * Широковещательный приемник для обновления списка заметок
+	 */
+	private TasksRefreshReceiver tasksRefreshReceiver = new TasksRefreshReceiver();
+
+	/**
+	 * Широковещательный приемник для удаления выбранных заметки/заметок
+	 */
+	private DeleteDocReceiver deleteDocReceiver = new DeleteDocReceiver();
 
 
 	@Override
@@ -63,6 +80,14 @@ public class ToDoList extends Activity {
 		intentDetail = new Intent(this, ToDoDetail.class);
 
 		fillListTasks();
+
+		LocalBroadcastManager.getInstance(this).registerReceiver(
+				tasksRefreshReceiver, new IntentFilter(AppContext.RECEIVER_LV_REFRESH)
+		);
+
+		LocalBroadcastManager.getInstance(this).registerReceiver(
+				deleteDocReceiver, new IntentFilter(AppContext.RECEIVER_LV_ITEM_DELETE)
+		);
 	}
 
 	@Override
@@ -80,8 +105,17 @@ public class ToDoList extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()){
-			case R.id.item1_add_task:{
+		switch (item.getItemId()) {
+			case R.id.item_del_task:
+				Log.d(LOG, "item del");
+				if (!docsIndicesToRemove.isEmpty()) {
+					Intent intent = new Intent(AppContext.RECEIVER_LV_ITEM_DELETE);
+					intent.putIntegerArrayListExtra(AppContext.KEY_DOC_INDEXES, docsIndicesToRemove);
+					LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+				}
+				break;
+
+			case R.id.item1_add_task: {
 				Bundle bundle = new Bundle();
 				bundle.putInt(AppContext.KEY_TYPE_ACTION, AppContext.VAL_ACTION_NEWTASK);
 				intentDetail.putExtras(bundle);
@@ -115,7 +149,7 @@ public class ToDoList extends Activity {
 		Collections.sort(listDocs, comparator);
 		updateIndices();
 
-		arrayAdapter = new ExpandAdapter(this, R.layout.pattern_lw_row, listDocs);
+		arrayAdapter = new ExpandAdapter(this, R.layout.pattern_lw_row, listDocs, docSelListener);
 		lvTasks.setAdapter(arrayAdapter);
 		arrayAdapter.getFilter().filter(etFilterTasks.getText().toString());
 	}
@@ -197,5 +231,55 @@ public class ToDoList extends Activity {
 		@Override
 		public void afterTextChanged(Editable s) {
 		}
+	}
+
+	/**
+	 * Коллекция содержащия позиции элементов для удаления
+	 */
+	private ArrayList<Integer> docsIndicesToRemove = new ArrayList<Integer>();
+
+	/**
+	 * Слушатель нажатия на checkbox каждого элемента списка
+	 */
+	private class DocumentSelectedListener implements View.OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			CheckBox chb = (CheckBox) v;
+			ToDoDocument doc = (ToDoDocument) chb.getTag();
+
+//			Log.d(LOG, "checkbox gettag doc.getNumber() = " + doc.getNumber());
+
+			if (chb.isChecked()) {
+				docsIndicesToRemove.add(doc.getNumber());
+			} else {
+				docsIndicesToRemove.remove((Integer) doc.getNumber()); //т.к. мы кладем объекты то и стерать мы должны объекты
+			}
+			Collections.sort(docsIndicesToRemove);
+
+			/* for debug */
+//			for (ToDoDocument docc : listDocs) {
+//				Log.d(LOG, "docc.getNumber() = " + docc.getNumber());
+//			}
+//			Log.d(LOG, "---");
+//
+//			for (Integer num : docsIndicesToRemove) {
+//				Log.d(LOG, "toDoDocument number = " + num);
+//			}
+//			Log.d(LOG, "===");
+		}
+
+	}
+
+	/**
+	 * Широковещательный приемник для обновления списка заметок
+	 */
+	private class TasksRefreshReceiver extends BroadcastReceiver{
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			sort();
+		}
+
 	}
 }

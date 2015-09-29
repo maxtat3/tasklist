@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import edu.sintez.tasklist.R;
+import edu.sintez.tasklist.view.ToDoList;
 
 import java.util.List;
 
@@ -17,10 +19,12 @@ import java.util.List;
 public class ExpandAdapter extends ArrayAdapter<ToDoDocument> {
 
 	private static final String LOG = ExpandAdapter.class.getName();
+	private View.OnClickListener docSelListener;
 
 
-	public ExpandAdapter(Context context, int textViewResourceId, List<ToDoDocument> listDocs) {
+	public ExpandAdapter(Context context, int textViewResourceId, List<ToDoDocument> listDocs, View.OnClickListener docSelListener) {
 		super(context, textViewResourceId, listDocs);
+		this.docSelListener = docSelListener;
 	}
 
 	public ExpandAdapter(Context context, int textViewResourceId, ToDoDocument[] objects) {
@@ -38,6 +42,9 @@ public class ExpandAdapter extends ArrayAdapter<ToDoDocument> {
 			viewHolder.name = (TextView) convertView.findViewById(R.id.tv_task_name);
 			viewHolder.date = (TextView) convertView.findViewById(R.id.tv_task_date);
 			viewHolder.imgPriority = (ImageView) convertView.findViewById(R.id.image_priority_task);
+			viewHolder.chbItemSel = (CheckBox) convertView.findViewById(R.id.chbox_item_sel);
+
+			viewHolder.chbItemSel.setOnClickListener(docSelListener);
 
 			convertView.setTag(viewHolder);
 		}
@@ -58,6 +65,8 @@ public class ExpandAdapter extends ArrayAdapter<ToDoDocument> {
 				break;
 		}
 
+		viewHolder.chbItemSel.setTag(doc);
+
 		return convertView;
 	}
 
@@ -65,5 +74,6 @@ public class ExpandAdapter extends ArrayAdapter<ToDoDocument> {
 		public TextView name;
 		public TextView date;
 		public ImageView imgPriority;
+		public CheckBox chbItemSel;
 	}
 }

@@ -2,9 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-            android:title="sorting"
-            android:showAsAction="ifRoom|withText"
-            >
+        android:id="@+id/item_del_task"
+        android:title="@string/del"
+        />
+
+    <item
+        android:title="sorting"
+        android:showAsAction="ifRoom|withText"
+        >
         <menu xmlns:android="http://schemas.android.com/apk/res/android">
             <group android:checkableBehavior="single">
                 <item
@@ -24,7 +29,8 @@
     </item>
 
     <item
-            android:id="@+id/item1_add_task"
-            android:title="@string/add_task"/>
+        android:id="@+id/item1_add_task"
+        android:title="@string/add_task"
+        />
 
 </menu>

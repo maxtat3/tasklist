@@ -17,8 +17,9 @@ public class AppContext extends Application{
 	 */
 	public static final String LOG = AppContext.class.getName();
 
-	public static final String KEY_TYPE_ACTION = LOG + ".typeactionkey";
-	public static final String KEY_DOC_INDEX = LOG + ".docindexkey";
+	public static final String KEY_TYPE_ACTION = LOG + "typeactionkey";
+	public static final String KEY_DOC_INDEX = LOG + "docindexkey";
+	public static final String KEY_DOC_INDEXES = LOG + "docindexeskey";
 	public static final int VAL_ACTION_NEWTASK = 0;
 	public static final int VAL_ACTION_UPDATE = 1;
 
@@ -26,6 +27,10 @@ public class AppContext extends Application{
 	public static final String KEY_CONTENT = "content";
 	public static final String KEY_DATE = "date";
 	public static final String KEY_PRIORITY = "priority";
+
+	public static final String RECEIVER_LV_REFRESH = LOG + "refresh";
+	public static final String RECEIVER_LV_ITEM_DELETE = LOG + "itemDelete";
+
 
 	/**
 	 * Хранилище всех документов
