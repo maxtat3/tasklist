@@ -4,26 +4,32 @@
     <item
         android:id="@+id/item_del_task"
         android:title="@string/del"
+		android:showAsAction="ifRoom|withText"
+        android:icon="@mipmap/ic_delete_task"
         />
 
     <item
         android:title="sorting"
         android:showAsAction="ifRoom|withText"
+		android:icon="@mipmap/ic_sorted_tasks"
         >
         <menu xmlns:android="http://schemas.android.com/apk/res/android">
             <group android:checkableBehavior="single">
                 <item
                         android:id="@+id/menu_sort_name"
                         android:title="по имени"
-                        />
+						android:titleCondensed="0"
+						/>
                 <item
                         android:id="@+id/menu_sort_date"
                         android:title="по дате"
-                        />
+						android:titleCondensed="1"
+						/>
                 <item
                         android:id="@+id/menu_sort_priority"
                         android:title="по приоритету"
-                        />
+						android:titleCondensed="2"
+						/>
             </group>
         </menu>
     </item>
@@ -31,6 +37,8 @@
     <item
         android:id="@+id/item1_add_task"
         android:title="@string/add_task"
+		android:showAsAction="ifRoom|withText"
+        android:icon="@mipmap/ic_create_new_task"
         />
 
 </menu>

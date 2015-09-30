@@ -3,18 +3,28 @@
 
     <item
             android:id="@+id/item2_back"
-            android:title="@string/back"/>
+            android:title="@string/back"
+            android:icon="@mipmap/ic_back"
+            android:showAsAction="ifRoom"
+            />
     <item
             android:id="@+id/item3_save"
-            android:title="@string/save"/>
+            android:title="@string/save"
+            android:icon="@mipmap/ic_save"
+            android:showAsAction="ifRoom"
+            />
     <item
             android:id="@+id/item4_del"
-            android:title="@string/del"/>
+            android:title="@string/del"
+            android:icon="@mipmap/ic_delete_task"
+            android:showAsAction="ifRoom"
+            />
 
     <item
             android:id="@+id/menu_priority"
             android:title="priority"
-            android:showAsAction="ifRoom|withText"
+            android:showAsAction="ifRoom"
+            android:icon="@mipmap/ic_priority"
             >
             <menu xmlns:android="http://schemas.android.com/apk/res/android">
                 <group android:checkableBehavior="single">
@@ -35,7 +45,7 @@
                             android:title="high"
                             />
                 </group>
-        </menu>
+			</menu>
     </item>
 
 </menu>
