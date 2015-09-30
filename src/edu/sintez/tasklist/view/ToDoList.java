@@ -288,6 +288,7 @@ public class ToDoList extends Activity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			docsIndicesToRemove.clear();
 			sort();
 		}
 
