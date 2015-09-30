@@ -9,6 +9,7 @@
         />
 
     <item
+        android:id="@+id/item_sorting_tasks"
         android:title="sorting"
         android:showAsAction="ifRoom|withText"
 		android:icon="@mipmap/ic_sorted_tasks"

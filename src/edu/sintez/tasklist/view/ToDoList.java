@@ -2,7 +2,6 @@ package edu.sintez.tasklist.view;
 
 import android.app.Activity;
 import android.content.*;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -65,6 +64,10 @@ public class ToDoList extends Activity {
 	 */
 	private DeleteDocReceiver deleteDocReceiver = new DeleteDocReceiver();
 
+	private MenuItem miAddTask;
+	private MenuItem miSortTasks;
+	private MenuItem miDelTask;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -102,6 +105,13 @@ public class ToDoList extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_todo_list, menu);
+
+		miAddTask = menu.findItem(R.id.item1_add_task);
+		miSortTasks = menu.findItem(R.id.item_sorting_tasks);
+		miDelTask = menu.findItem(R.id.item_del_task);
+
+		turnOnOffControls();
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -154,6 +164,8 @@ public class ToDoList extends Activity {
 		arrayAdapter = new ExpandAdapter(this, R.layout.pattern_lw_row, listDocs, docSelListener);
 		lvTasks.setAdapter(arrayAdapter);
 		arrayAdapter.getFilter().filter(etFilterTasks.getText().toString());
+
+		turnOnOffControls();
 	}
 
 	/**
@@ -198,6 +210,31 @@ public class ToDoList extends Activity {
 				ToDoDocument doc = new ToDoDocument(name, content, new Date(dateMs), Priority.values()[priority]);
 				listDocs.add(doc);
 			}
+		}
+	}
+
+	/**
+	 * Включение и отключение определенных кнопок в actionbar
+	 */
+	private void turnOnOffControls() {
+		if (miAddTask != null && miSortTasks != null) {
+			/* нет заметок */
+			if (listDocs.isEmpty()) {
+				miAddTask.setEnabled(true);
+				miSortTasks.setEnabled(false);
+				miDelTask.setEnabled(false);
+				/* выделено >= 1 заметки (заметки есть) */
+			} else if (!docsIndicesToRemove.isEmpty()) {
+				miAddTask.setEnabled(false);
+				miSortTasks.setEnabled(false);
+				miDelTask.setEnabled(true);
+				/* есть заметки */
+			} else {
+				miAddTask.setEnabled(true);
+				miSortTasks.setEnabled(true);
+				miDelTask.setEnabled(true);
+			}
+			checkFilterEnable();
 		}
 	}
 
@@ -266,6 +303,8 @@ public class ToDoList extends Activity {
 				tvTaskDate.setTypeface(null, Typeface.NORMAL);
 			}
 			Collections.sort(docsIndicesToRemove);
+
+			turnOnOffControls();
 
 			/* for debug */
 //			for (ToDoDocument docc : listDocs) {
