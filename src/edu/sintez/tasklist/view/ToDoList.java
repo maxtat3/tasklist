@@ -64,8 +64,19 @@ public class ToDoList extends Activity {
 	 */
 	private DeleteDocReceiver deleteDocReceiver = new DeleteDocReceiver();
 
+	/**
+	 * Кнопка (элемент меню) "Добавлени новой заметки"
+	 */
 	private MenuItem miAddTask;
+
+	/**
+	 * Кнопка (элемент меню) "Сортровка заметок по ..."
+	 */
 	private MenuItem miSortTasks;
+
+	/**
+	 * Кнопка (элемент меню) "Удаление заметки/заметок"
+	 */
 	private MenuItem miDelTask;
 
 
