@@ -2,6 +2,8 @@ package edu.sintez.tasklist.view;
 
 import android.app.Activity;
 import android.content.*;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
@@ -250,10 +252,18 @@ public class ToDoList extends Activity {
 
 //			Log.d(LOG, "checkbox gettag doc.getNumber() = " + doc.getNumber());
 
+			RelativeLayout container = (RelativeLayout) v.getParent();
+			TextView tvTaskName = (TextView) container.findViewById(R.id.tv_task_name);
+			TextView tvTaskDate = (TextView) container.findViewById(R.id.tv_task_date);
+
 			if (chb.isChecked()) {
 				docsIndicesToRemove.add(doc.getNumber());
+				tvTaskName.setTypeface(null, Typeface.BOLD_ITALIC);
+				tvTaskDate.setTypeface(null, Typeface.BOLD_ITALIC);
 			} else {
 				docsIndicesToRemove.remove((Integer) doc.getNumber()); //т.к. мы кладем объекты то и стерать мы должны объекты
+				tvTaskName.setTypeface(null, Typeface.NORMAL);
+				tvTaskDate.setTypeface(null, Typeface.NORMAL);
 			}
 			Collections.sort(docsIndicesToRemove);
 
