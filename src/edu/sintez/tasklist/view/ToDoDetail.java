@@ -142,15 +142,32 @@ public class ToDoDetail extends Activity {
 				return true;
 
 			case R.id.menu_pr_low:
-			case R.id.menu_pr_medium:
-			case R.id.menu_pr_high: {
-				item.setChecked(true);
-				Priority[] values = Priority.values();
-				currPriority = values[Integer.parseInt(item.getTitleCondensed().toString())];
+				menuPr.setIcon(R.mipmap.ic_priority_low);
+				setDocPriority(item);
 				return true;
-			}
+
+			case R.id.menu_pr_medium:
+				menuPr.setIcon(R.mipmap.ic_priority_normal);
+				setDocPriority(item);
+				return true;
+
+			case R.id.menu_pr_high:
+				menuPr.setIcon(R.mipmap.ic_priority_high);
+				setDocPriority(item);
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * Установка значка приоритета для элемента меню "приоритетв actionbar".
+	 * @param item элемент "приоритет"
+	 */
+	private void setDocPriority(MenuItem item) {
+		item.setCheckable(true);
+		item.setChecked(true);
+		Priority[] values = Priority.values();
+		currPriority = values[Integer.parseInt(item.getTitleCondensed().toString())];
 	}
 
 	/**
