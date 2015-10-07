@@ -2,50 +2,51 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-            android:id="@+id/item2_back"
-            android:title="@string/back"
-            android:icon="@mipmap/ic_back"
-            android:showAsAction="ifRoom"
-            />
+		android:id="@+id/item_back"
+		android:title="@string/back"
+		android:icon="@mipmap/ic_back"
+		android:showAsAction="ifRoom"
+		/>
     <item
-            android:id="@+id/item3_save"
-            android:title="@string/save"
-            android:icon="@mipmap/ic_save"
-            android:showAsAction="ifRoom"
-            />
-    <item
-            android:id="@+id/item4_del"
-            android:title="@string/del"
-            android:icon="@mipmap/ic_delete_task"
-            android:showAsAction="ifRoom"
-            />
+		android:id="@+id/item_del"
+		android:title="@string/del"
+		android:icon="@mipmap/ic_delete_task"
+		android:showAsAction="ifRoom"
+		/>
 
     <item
-            android:id="@+id/menu_priority"
-            android:title="priority"
-            android:showAsAction="ifRoom"
-            android:icon="@mipmap/ic_priority"
-            >
-            <menu xmlns:android="http://schemas.android.com/apk/res/android">
-                <group android:checkableBehavior="single">
-                    <item
-                            android:id="@+id/menu_pr_low"
-                            android:checked="true"
-                            android:titleCondensed="0"
-                            android:title="low"
-                            />
-                    <item
-                            android:id="@+id/menu_pr_medium"
-                            android:titleCondensed="1"
-                            android:title="medium"
-                            />
-                    <item
-                            android:id="@+id/menu_pr_high"
-                            android:titleCondensed="2"
-                            android:title="high"
-                            />
-                </group>
-			</menu>
+		android:id="@+id/menu_priority"
+		android:title="priority"
+		android:showAsAction="ifRoom"
+		android:icon="@mipmap/ic_priority"
+		>
+        <menu xmlns:android="http://schemas.android.com/apk/res/android">
+            <group android:checkableBehavior="single">
+                <item
+					android:id="@+id/menu_pr_low"
+					android:checked="true"
+					android:titleCondensed="0"
+					android:title="low"
+					/>
+                <item
+					android:id="@+id/menu_pr_medium"
+					android:titleCondensed="1"
+					android:title="medium"
+					/>
+                <item
+					android:id="@+id/menu_pr_high"
+					android:titleCondensed="2"
+					android:title="high"
+					/>
+            </group>
+        </menu>
     </item>
+
+    <item
+		android:id="@+id/item_save"
+		android:title="@string/save"
+		android:icon="@mipmap/ic_save"
+		android:showAsAction="ifRoom"
+		/>
 
 </menu>

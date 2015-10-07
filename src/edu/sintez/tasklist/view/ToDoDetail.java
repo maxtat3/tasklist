@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -125,7 +124,7 @@ public class ToDoDetail extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()){
-			case R.id.item2_back:
+			case R.id.item_back:
 				if (isChangeDoc()) {
 					dialogConfirmSave();
 				} else {
@@ -133,12 +132,12 @@ public class ToDoDetail extends Activity {
 				}
 				return true;
 
-			case R.id.item3_save:
+			case R.id.item_save:
 				saveDocument();
 				finish();
 				return true;
 
-			case R.id.item4_del:
+			case R.id.item_del:
 				dialogConfirmDel();
 				return true;
 
