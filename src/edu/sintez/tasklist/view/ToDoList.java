@@ -151,16 +151,19 @@ public class ToDoList extends Activity {
 			case R.id.menu_sort_name:
 				comparator = ListComparator.getCompByName();
 				sort();
+				item.setChecked(true);
 				return true;
 
 			case R.id.menu_sort_date:
 				comparator = ListComparator.getCompByDate();
 				sort();
+				item.setChecked(true);
 				return true;
 
 			case R.id.menu_sort_priority:
 				comparator = ListComparator.getCompByPriority();
 				sort();
+				item.setChecked(true);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
