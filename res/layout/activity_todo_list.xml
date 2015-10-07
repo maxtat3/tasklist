@@ -40,6 +40,14 @@
 				android:hint="filter task"
 				/>
 
+		<Button
+				android:id="@+id/btn_clear_filter_text"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:text="X"
+				android:hint="Clear filter"
+				/>
+
 	</LinearLayout>
 
 </LinearLayout>

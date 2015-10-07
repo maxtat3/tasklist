@@ -90,6 +90,14 @@ public class ToDoList extends Activity {
 		etFilterTasks = (EditText) findViewById(R.id.et_filter_task);
 		etFilterTasks.addTextChangedListener(new FilterTaskChangeListener());
 
+		Button btnClearFilterText = (Button) findViewById(R.id.btn_clear_filter_text);
+		btnClearFilterText.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				etFilterTasks.setText("");
+			}
+		});
+
 		lvTasks = (ListView) findViewById(R.id.lw_tasks);
 		lvTasks.setOnItemClickListener(new ListViewClickListener());
 
