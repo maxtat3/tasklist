@@ -93,6 +93,8 @@ public class ToDoList extends Activity {
 		lvTasks = (ListView) findViewById(R.id.lw_tasks);
 		lvTasks.setOnItemClickListener(new ListViewClickListener());
 
+		lvTasks.setEmptyView(findViewById(R.id.rl_empty_view));
+
 		intentDetail = new Intent(this, ToDoDetail.class);
 
 		fillListTasks();
