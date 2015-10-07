@@ -83,6 +83,8 @@ public class ToDoDetail extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_todo_detail);
 
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+
 		etContent = (EditText) findViewById(R.id.et);
 
 		typeAction = getIntent().getExtras().getInt(AppContext.KEY_TYPE_ACTION);
@@ -123,8 +125,8 @@ public class ToDoDetail extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()){
-			case R.id.item_back:
+		switch (item.getItemId()) {
+			case android.R.id.home:
 				if (isChangeDoc()) {
 					dialogConfirmSave();
 				} else {
